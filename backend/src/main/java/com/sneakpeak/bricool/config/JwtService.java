@@ -1,5 +1,6 @@
 package com.sneakpeak.bricool.config;
 
+import com.sneakpeak.bricool.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -58,6 +59,10 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
+
+        Long userId  = ((User) userDetails).getId();
+        System.out.println(userId);
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -67,6 +72,7 @@ public class JwtService {
                 .claim("role", userDetails.getAuthorities().stream()
                         .map(grantedAuthority -> grantedAuthority.getAuthority())
                         .collect(Collectors.toList()))
+                .claim("userId", userId)
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -91,6 +97,10 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("id", String.class));
     }
 
     private Key getSignInKey() {
