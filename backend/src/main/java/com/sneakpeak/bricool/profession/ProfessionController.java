@@ -2,12 +2,14 @@ package com.sneakpeak.bricool.profession;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/professions")
+@RequestMapping("/professions")
 public class ProfessionController {
 
     private final ProfessionService professionService;
@@ -16,6 +18,7 @@ public class ProfessionController {
         this.professionService = professionService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Profession> createProfession(@RequestBody Profession profession) {
         Profession createdProfession = professionService.createProfession(profession);
@@ -37,6 +40,7 @@ public class ProfessionController {
         return ResponseEntity.ok(profession);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateProfession(@PathVariable Long id, @RequestBody Profession profession) {
         Profession updatedProfession = professionService.updateProfession(id, profession);
@@ -46,6 +50,7 @@ public class ProfessionController {
         return ResponseEntity.ok(updatedProfession);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProfession(@PathVariable Long id) {
         boolean isDeleted = professionService.deleteProfession(id);
