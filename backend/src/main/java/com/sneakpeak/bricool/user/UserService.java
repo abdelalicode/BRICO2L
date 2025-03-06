@@ -1,5 +1,6 @@
 package com.sneakpeak.bricool.user;
 
+import com.sneakpeak.bricool.exception.NotFoundException;
 import com.sneakpeak.bricool.role.Role;
 import com.sneakpeak.bricool.role.RoleRepository;
 import com.sneakpeak.bricool.role.RoleType;
@@ -18,12 +19,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
@@ -52,19 +55,14 @@ public class UserService {
         return Optional.empty();
     }
 
-    public User updateUser(User user, Long userId) {
+    public User updateUser(User userInfos, String userMail) {
 
-        Optional<User> existingUser = userRepository.findById(userId);
+        User existingUser = userRepository.findByEmail(userMail)
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
-        if(existingUser.isEmpty()) {
-//            throw new NotFoundException("User not found.");
-        }
+        modelMapper.map(userInfos, existingUser);
 
-        existingUser.get().setFirstName(user.getFirstName());
-        existingUser.get().setLastName(user.getLastName());
-        existingUser.get().setEmail(user.getEmail());
-        existingUser.get().setAge(user.getAge());
-        return userRepository.save(existingUser.get());
+        return userRepository.save(existingUser);
 
     }
 

@@ -12,6 +12,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  web:
+    path-match:
+      matching-strategy: ant_path_matcher
+    servlet:
+      path: /api/v1
 
 
 

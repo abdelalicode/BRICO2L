@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalHandler {
 
-//    @ExceptionHandler(NotFoundException.class)
-//    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
-//        return ResponseHandler.errorBuilder(
-//                ex.getMessage(),
-//                HttpStatus.NOT_FOUND,
-//                "404"
-//        );
-//    }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
+        return ResponseHandler.errorBuilder(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND
+        );
+    }
 //
 //    @ExceptionHandler(NotEligibleException.class)
 //    public ResponseEntity<Object> handleNotEligibleException(NotEligibleException ex) {
