@@ -27,21 +27,23 @@ export default function ClientSpace() {
   useEffect(() => {
     const fetchClient = async () => {
       const response = await Api.getClient();
-      setClient(response.data);
+      console.log(response.data.data);
+      setClient(response.data.data);
       setLoading(false);
     };
     fetchClient();
   }, []);
 
   const updateRole = async () => {
-    const response = await Api.UpdateRole(client.id);
+    const response = await Api.UpdateRole(2);
     logout();
     navigate(HOME);
   };
 
   const fetchUpdatedClient = async () => {
     const response = await Api.getClient();
-    setClient(response.data);
+   
+    setClient(response.data.data);
   };
 
   const handleInputChange = (event) => {
@@ -89,9 +91,9 @@ export default function ClientSpace() {
                     alt="profile-pic"
                   />
                   <h1 className="text-xl font-bold capitalize">
-                    {client.firstname} {client.lastname}
+                    {client.firstName} {client.lastName}
                   </h1>
-                  <p className="text-gray-700">{client.username}</p>
+                  <p className="text-gray-700">{client.email}</p>
                 </div>
                 <hr className="my-6 border-t border-gray-300" />
                 <div className="flex flex-col">
@@ -218,7 +220,7 @@ export default function ClientSpace() {
                     <li className="mb-4">
                       Member Since:{" "}
                       <span className="bg-gray-100 rounded-md bg-opacity-70 p-1">
-                        {new Date(client.created_at).toLocaleDateString()}
+                        {new Date(client.memberSince).toLocaleDateString()}
                       </span>
                     </li>
                   </ul>
@@ -238,7 +240,7 @@ export default function ClientSpace() {
                   </button>
                 </div>
 
-                {client.requests.length > 0 ? (
+                {client.requests ? (
                   client.requests.map((request) => (
                     <div className="mb-6" key={request.id}>
                       <div className="flex justify-between flex-wrap gap-2 w-full">
@@ -285,7 +287,7 @@ export default function ClientSpace() {
                   All My Reviews
                 </h2>
 
-                {client.reviews.length > 0 ? (
+                {client.reviews ? (
                   client.reviews.map((review) => (
                     <div className="mb-6" key={review.id}>
                       <div className="flex justify-between flex-wrap gap-2 w-full">

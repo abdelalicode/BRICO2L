@@ -4,11 +4,11 @@ export default function Banner() {
   return (
     <div>
       <h1 className="mt-96 md:mt-24 text-center text-4xl font-semibold">
-        YOUR PLATEFORM FOR ALL DOINGS
+        YOUR PLATFORM TO FIND LOCAL WORKERS
       </h1>
 
       <div className="grid grid-cols-1 md:lg:xl:grid-cols-3 group bg-white">
-        <div className="p-10 flex flex-col items-center text-center group   hover:bg-slate-50 cursor-pointer">
+        <div className="p-10 flex flex-col items-center text-center group hover:bg-slate-50 cursor-pointer">
           <span className="p-5 rounded-full bg-red-500 text-white shadow-lg shadow-red-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -26,15 +26,15 @@ export default function Banner() {
             </svg>
           </span>
           <p className="text-xl font-medium text-slate-700 mt-3">
-            Most Experienced Team
+            Find an Electrician Near You
           </p>
           <p className="mt-2 text-sm text-slate-500">
-            Team BrainEdge education is a bunch of highly focused, energetic set
-            of people.
+            Connect with certified electricians for repairs, installations, and
+            maintenance right in your neighborhood.
           </p>
         </div>
 
-        <div className="p-10 flex flex-col items-center text-center group   hover:bg-slate-50 cursor-pointer">
+        <div className="p-10 flex flex-col items-center text-center group hover:bg-slate-50 cursor-pointer">
           <span className="p-5 rounded-full bg-orange-500 text-white shadow-lg shadow-orange-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -52,14 +52,15 @@ export default function Banner() {
             </svg>
           </span>
           <p className="text-xl font-medium text-slate-700 mt-3">
-            Best Test preparation
+            Need a Carpenter for Custom Work?
           </p>
           <p className="mt-2 text-sm text-slate-500">
-            Know where you stand and what next to do to succeed .
+            Whether it's furniture or home improvement, hire skilled carpenters
+            with top-rated expertise.
           </p>
         </div>
 
-        <div className="p-10 flex flex-col items-center text-center group  hover:bg-slate-50 cursor-pointer">
+        <div className="p-10 flex flex-col items-center text-center group hover:bg-slate-50 cursor-pointer">
           <span className="p-5 rounded-full bg-yellow-500 text-white shadow-lg shadow-yellow-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -77,15 +78,15 @@ export default function Banner() {
             </svg>
           </span>
           <p className="text-xl font-medium text-slate-700 mt-3">
-            Admission process Guidance
+            Hire a Skilled Builder for Your Project
           </p>
           <p className="mt-2 text-sm text-slate-500">
-            Professional Advice for higher education abroad and select the top
-            institutions worldwide.
+            From home renovation to new construction, find the best builders
+            for your needs.
           </p>
         </div>
 
-        <div className="p-10 flex flex-col items-center text-center group  hover:bg-slate-50 cursor-pointer">
+        <div className="p-10 flex flex-col items-center text-center group hover:bg-slate-50 cursor-pointer">
           <span className="p-5 rounded-full bg-lime-500 text-white shadow-lg shadow-lime-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -103,10 +104,11 @@ export default function Banner() {
             </svg>
           </span>
           <p className="text-xl font-medium text-slate-700 mt-3">
-            Best Track Record
+            Plumbing Services On Demand
           </p>
           <p className="mt-2 text-sm text-slate-500">
-            Yet another year ! Yet another jewel in our crown!
+            Need urgent plumbing repairs or installations? Hire a reliable
+            plumber near you today.
           </p>
         </div>
 
@@ -128,11 +130,11 @@ export default function Banner() {
             </svg>
           </span>
           <p className="text-xl font-medium text-slate-700 mt-3">
-            Free Mock Exams
+            Find a Painter for Your Home or Office
           </p>
           <p className="mt-2 text-sm text-slate-500">
-            Get Topic-Wise Tests, Section- Wise and mock tests for your
-            preparation.
+            Freshen up your space with professional painting services. Get a
+            quote from local painters today.
           </p>
         </div>
 
@@ -154,26 +156,24 @@ export default function Banner() {
             </svg>
           </span>
           <p className="text-xl font-medium text-slate-700 mt-3">
-            Genuine Visa Advice
+            Genuine Contractor Reviews
           </p>
           <p className="mt-2 text-sm text-slate-500">
-            Visa process by helping you create the necessary documentation
+            Check reviews, ratings, and portfolios to hire trusted local workers
+            for any job.
           </p>
         </div>
       </div>
 
-      <div className="w-full bg-[#26303D] bg-opacity-95  py-24 px-20 flex justify-between items-center">
+      <div className="w-full bg-[#26303D] bg-opacity-95 py-24 px-20 flex justify-between items-center">
         <p className="text-white">
-          {" "}
-          <span className="text-4xl font-medium">
-            Still Confused ?
-          </span> <br />{" "}
+          <span className="text-4xl font-medium">Need a Hand?</span> <br />
           <span className="text-lg">
-            Book For Free Career Consultation Today !{" "}
+            Book your service or consultation today!
           </span>
         </p>
         <button className="px-5 py-3 font-medium text-slate-700 shadow-xl hover:bg-white duration-150 bg-yellow-400">
-          BOOK AN APPOINTMENT{" "}
+          BOOK A WORKER NOW
         </button>
       </div>
     </div>

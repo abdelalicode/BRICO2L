@@ -64,17 +64,17 @@ export default function ClientSignUp() {
                 }
             })
             .catch(({ response }) => {
-                console.log(response.data.data);
+                // console.log(response.data.data);
                 // form.setError("email", {
                 //     message: response.data.data.email,
                 // });
-                for (const field in formSchema.shape) {
-                    if (response.data.data[field]) {
-                        form.setError(field, {
-                            message: response.data.data[field],
-                        });
-                    }
-                }
+               // for (const field in formSchema.shape) {
+                 //   if (response.data.data[field]) {
+                 //       form.setError(field, {
+                   //         message: response.data.data[field],
+                  //      });
+                  //  }
+               // }
             });
 
         setLoading(false);
