@@ -4,6 +4,7 @@ import com.sneakpeak.bricool.exception.NotFoundException;
 import com.sneakpeak.bricool.role.Role;
 import com.sneakpeak.bricool.role.RoleRepository;
 import com.sneakpeak.bricool.role.RoleType;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -70,5 +71,37 @@ public class UserService {
         return Optional.of(userRepository.findAll());
     }
 
+
+    public User getClient(String username) {
+        return userRepository.findByEmail(username)
+                .orElse(null);
+    }
+
+    public User updateUserRole(@Valid UserDTO userDTO, String str) {
+        User existingUser = userRepository.findByEmail(str)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        Role role = roleRepository.findById(userDTO.getRole_id()).orElse(null);
+
+        if(role != null) {
+            existingUser.setRole(role);
+            return userRepository.save(existingUser);
+        }
+        return null;
+    }
+
+    public List<User> findAllWorkers() {
+        return userRepository.findAll().stream()
+                .filter(user -> user.getRole().getName().equals(RoleType.WORKER))
+                .toList();
+    }
+
+    public Optional<Worker> getWorker(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent() && user.get() instanceof Worker) {
+            return Optional.of((Worker) user.get());
+        }
+        return Optional.empty();
+    }
 
 }

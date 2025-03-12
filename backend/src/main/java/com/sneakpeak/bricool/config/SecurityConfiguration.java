@@ -21,6 +21,7 @@ import static com.sneakpeak.bricool.role.RoleType.ADMIN;
 import static com.sneakpeak.bricool.role.RoleType.WORKER;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.authorization.AuthenticatedAuthorizationManager.anonymous;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -34,10 +35,11 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private static final String[] WHITE_LIST_URL = {"/auth/**"};
+    private static final String[] WHITE_LIST_URL = {"/auth/**", "/cities/**", "/professions/**"};
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
