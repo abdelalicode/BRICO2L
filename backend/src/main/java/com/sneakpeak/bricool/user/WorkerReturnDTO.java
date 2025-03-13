@@ -1,5 +1,8 @@
 package com.sneakpeak.bricool.user;
 
+import com.sneakpeak.bricool.city.City;
+import com.sneakpeak.bricool.profession.Profession;
+import com.sneakpeak.bricool.reviews.Review;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,15 +12,14 @@ import java.util.List;
 
 @Setter
 @Getter
-public class UserReturnDTO {
+public class WorkerReturnDTO {
     private Long id;
     private String firstName;
     private String lastName;
-    private Integer age;
     private String email;
     private String phone;
-    private String address;
     private LocalDateTime memberSince;
-    private String roleName;
-//    private List<String> ui;
+    private Profession profession;
+    private City city;
+    private List<Review> reviews;
 }

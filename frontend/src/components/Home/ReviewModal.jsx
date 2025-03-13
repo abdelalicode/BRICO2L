@@ -31,10 +31,11 @@ export default function ReviewModal({ worker }) {
     event.preventDefault();
   
     console.log(formData);
+    console.log(worker);
       const response = await Api.SendReview(
         formData.stars,
         formData.content,
-        worker.id
+        worker
       );
 
       console.log(response);
@@ -64,7 +65,7 @@ export default function ReviewModal({ worker }) {
         <Modal.Body>
           <div className="text-center">
 
-                  <p className="my-4 font-bold">REVIEW FOR {worker.firstname} {worker.lastname}</p>
+                  <p className="my-4 font-bold">REVIEW FOR {worker.firstName} {worker.lastName}</p>
              {/* <div className="flex justify-center gap-4">
               <Button color="failure" onClick={handleCancelRequest}>
                 {"Yes, I'm sure"}

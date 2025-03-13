@@ -26,7 +26,7 @@ export default function UserContext({children}) {
     const [loading, setLoading] = useState(true);
 
 
-    const [authenticated, _setAuthenticated ] =useState('true' === window.localStorage.getItem('AUTHENTICATED'))
+    const [authenticated, _setAuthenticated ] = useState('true' === window.localStorage.getItem('AUTHENTICATED'))
 
     const login = async (email, password) => {
        return  Api.login(email, password)
@@ -39,7 +39,9 @@ export default function UserContext({children}) {
     const logout =  () => {
       setUser({});
       setAuthenticated(false);
-      window.localStorage.removeItem("user");
+      window.localStorage.removeItem("userId");
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("role");
     }
 
     const setAuthenticated = (isAuthenticated) =>

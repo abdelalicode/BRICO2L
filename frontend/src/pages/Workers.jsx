@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHomeContext } from "../context/HomeContext";
 import "../App.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Api from "../services/Api";
 import MyFooter from "../components/Home/MyFooter";
 
 export default function Workers() {
-  const [workers, setWorkers] = useState({});
+  const [workers, setWorkers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const card = useEffect(() => {
+    const isAuth = localStorage.getItem("AUTHENTICATED");
+
+    if(isAuth === 'false') {
+      navigate("/login");
+    }
+
     const fetchWorkers = async () => {
       const response = await Api.getWorkers();
-      setWorkers(response.data);
+      console.log(response.data.data);
+      setWorkers(response.data.data);
       setLoading(false);
     };
     fetchWorkers();
@@ -37,7 +44,7 @@ export default function Workers() {
             <Link to={`/worker/${worker.id}`}>
               <div>
                 <div class="flex items-center justify-between">
-                  <span class="text-gray-400 text-sm">{worker.job.type}</span>
+                  <span class="text-gray-400 text-sm">{worker.profession ? worker.profession: "No Profession Yet"}</span>
                   <span class="text-emerald-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +76,7 @@ export default function Workers() {
 
                 <div class="mt-8 ">
                   <h2 class="text-white font-bold text-2xl tracking-wide">
-                    {worker.firstname} <br /> {worker.lastname}
+                    {worker.firstName} {worker.lastName}
                   </h2>
                 </div>
                 {worker.available ? (
