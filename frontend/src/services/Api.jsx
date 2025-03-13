@@ -2,18 +2,18 @@ import { axiosClient } from "../api/axios";
 import SendTransaction from "../pages/RequestJob";
 
 const Api = {
-  getCsrfToken: async () => {
-    return await axiosClient.get("/sanctum/csrf-cookie");
-  },
+  // getCsrfToken: async () => {
+  //   return await axiosClient.get("/sanctum/csrf-cookie");
+  // },
 
   login: async (email, password) => {
-    return await axiosClient.post("api/login", { email, password });
+    return await axiosClient.post("api/v1/auth/authenticate", { email, password });
   },
 
-  signup: async (firstname, lastname, email, password, c_password) => {
-    return await axiosClient.post("api/register", {
-      firstname,
-      lastname,
+  signup: async (firstName, lastName, email, password, c_password) => {
+    return await axiosClient.post("api/v1/auth/register", {
+      firstName,
+      lastName,
       email,
       password,
       c_password,
@@ -21,7 +21,7 @@ const Api = {
   },
 
   logout: async () => {
-    return await axiosClient.post("api/logout");
+    return await axiosClient.post("api/v1/auth/logout");
   },
 
   filterOffers: async (selectedCity, selectedJob, selectedDate) => {
@@ -41,7 +41,7 @@ const Api = {
   },
 
   getWorker: async (id) => {
-    return await axiosClient.get(`/api/worker/${id}`);
+    return await axiosClient.get(`/api/v1/users/worker/${id}`);
   },
 
   getClientToWorker: async (id) => {
@@ -49,7 +49,7 @@ const Api = {
   },
 
   getWorkers: async () => {
-    return await axiosClient.get("/api/workers");
+    return await axiosClient.get("/api/v1/users/workers");
   },
 
    
@@ -68,7 +68,7 @@ const Api = {
   },
 
   getClient: async () => {
-    return await axiosClient.get(`/api/client/`);
+    return await axiosClient.get(`/api/v1/users/client/`);
   },
 
   getAuthWorker : async () => {
@@ -100,27 +100,28 @@ const Api = {
   },
 
   AddJob: async (formData) => {
-    return await axiosClient.post("api/job", formData )
+    return await axiosClient.post("api/professions", formData )
   },
 
   UpdateJob: async (updatedJob, id) => {
-    return await axiosClient.put("api/job/"+id, updatedJob )
+    return await axiosClient.put("api/professions/"+id, updatedJob )
   },
 
-  SendReview: async (stars, content, worker_id) => {
-    return await axiosClient.post("api/review", {stars, content, worker_id})
+  SendReview: async (stars, content, worker) => {
+    return await axiosClient.post("api/v1/reviews", {stars, content, worker})
   },
 
   UpdatePhone : async (phone, id) => {
-      return await axiosClient.put("api/phone", {phone, id})
+      return await axiosClient.patch("api/v1/users/update-profile", {phone, id})
   },
 
-  UpdateRole : async (id) => {
-    return await axiosClient.put("api/role", {id})
+  UpdateRole : async (role_id) => {
+    return await axiosClient.patch("api/v1/users/update-role", {role_id})
   },
 
   UpdateAddress : async (address, id) => {
-    return await axiosClient.put("api/address", {address, id})
+    console.log(address);
+    return await axiosClient.patch("api/v1/users/update-profile", {address, id})
   },
 
   cancelRequest: async (id) => {
@@ -136,7 +137,7 @@ const Api = {
   },
   
   getJobs: async () => {
-    return await axiosClient.get("api/job");
+    return await axiosClient.get("api/v1/professions");
   },
 
   getStats: async () => {
@@ -144,11 +145,11 @@ const Api = {
   },
 
   deleteJob: async (id) => {
-    return await axiosClient.delete("api/job/"+id);
+    return await axiosClient.delete("api/professions/"+id);
   },
 
   getCities: async () => {
-    return await axiosClient.get("api/cities");
+    return await axiosClient.get("api/v1/cities");
   },
 
   getUser: async () => {

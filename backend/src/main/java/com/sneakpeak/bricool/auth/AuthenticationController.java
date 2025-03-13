@@ -31,6 +31,13 @@ public class AuthenticationController {
 
         }
 
+
+        @PostMapping("/logout")
+        public ResponseEntity<?> logout() {
+                return ResponseEntity.ok("Logout successful");
+        }
+
+
         @PostMapping("/public")
         public String publicEndPoint() {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -25,7 +25,7 @@ function ProfileTabs(props) {
         </TabsList>
         <TabsContent value="account">
           <div className="flex gap-2 flex-wrap">
-            {props.worker_offers.length > 0 ? (
+            {props.worker_offers ? (
               props.worker_offers.map((offer, key) => (
                 <div className="w-full my-4 p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                   <div className="flex items-center space-x-8">
@@ -48,7 +48,7 @@ function ProfileTabs(props) {
         </TabsContent>
         <TabsContent value="password">
           <div className="flex gap-2 flex-wrap">
-            {props.reviews_as_worker.length > 0 ? (
+            {props.reviews_as_worker ? (
               props.reviews_as_worker.map((review, key) => (
                 <div className="w-full my-4 p-4 text-left bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                   <div className="flex items-center space-x-8">

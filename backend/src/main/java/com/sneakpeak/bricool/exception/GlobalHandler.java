@@ -31,10 +31,14 @@ public class GlobalHandler {
     public ResponseEntity<Object> handleGenericException(Exception ex) {
         String fullMessage = ex.getMessage();
         String extractedMsg = fullMessage.split("\\[insert into")[0].trim();
-        String msg = extractedMsg.substring(extractedMsg.indexOf("Détail") + 17, extractedMsg.length() - 1);
-        return ResponseHandler.errorBuilder(
-                msg,
-                HttpStatus.FORBIDDEN
-        );
+
+        int detailIndex = extractedMsg.indexOf("Détail");
+        if (detailIndex != -1 && extractedMsg.length() > detailIndex + 17) {
+            String msg = extractedMsg.substring(detailIndex + 17, extractedMsg.length() - 1);
+            return ResponseHandler.errorBuilder(msg, HttpStatus.FORBIDDEN);
+        } else {
+            return ResponseHandler.errorBuilder(ex.getMessage(), HttpStatus.FORBIDDEN);
+        }
     }
+
 }

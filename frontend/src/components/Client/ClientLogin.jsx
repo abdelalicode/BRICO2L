@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { jwtDecode } from "jwt-decode";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,7 +33,7 @@ export default function ClientLogin() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "abdelali@gmail.com",
-            password: "123456",
+            password: "azerty",
         },
     });
 
@@ -45,19 +46,25 @@ export default function ClientLogin() {
                 
                 if (value.status === 200) {
                     setAuthenticated(true);
-                    setUser(value.data.data.user);
-                    console.log(value.data.data.user);
-                    window.localStorage.setItem('token', value.data.data.token)
-                    window.localStorage.setItem('user',JSON.stringify(value.data.data.user))
-                    if(value.data.data.user.role_id === 3)
+                    
+                    console.log(value.data.token)
+                    const decoded = jwtDecode(value.data.token);
+                    const userRole = decoded.role;
+
+                    console.log(userRole)
+                    console.log(decoded)
+
+                    window.localStorage.setItem('token', value.data.token)
+
+                    if(userRole.includes("ROLE_CLIENT"))
                     {
                         navigate(HOME);
                     }
-                    else if (value.data.data.user.role_id === 2)
+                    else if (userRole.includes("ROLE_WORKER"))
                     {
                         navigate(WORKERHOME);
                     }
-                    else if (value.data.data.user.role_id === 1)
+                    else if (userRole.includes("ROLE_ADMIN"))
                     {
                         navigate(ADMINHOME);
                     }
@@ -66,7 +73,7 @@ export default function ClientLogin() {
             })
             .catch(({ response }) => {
                 form.setError("globalError", {
-                    message: response.data.data.error,
+                    message: response.data.message,
                 });
             });
 
@@ -118,7 +125,7 @@ export default function ClientLogin() {
 
                     <div>
                         {form.formState.errors.globalError && (
-                            <div className="bg-red-400 text-white p-3 pl-12 w-1/3">
+                            <div className="bg-red-400 text-white p-2 pl-6 w-1/3">
                                 {form.formState.errors.globalError.message}
                             </div>
                         )}

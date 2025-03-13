@@ -88,12 +88,15 @@ export default function () {
                 className="ml-6 text-white py-2.5 text-sm text-gray-500 bg-transparent border-0 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               >
                 <option value="">Which city</option>
-                {cities &&
+                {cities && cities.data && cities.data.length > 0 ? (
                   cities.data.map((city) => (
                     <option key={city.id} value={city.id}>
                       {city.name}
                     </option>
-                  ))}
+                  ))
+                ) : (
+                  <option disabled>No cities available</option>
+                )}
               </select>
               <select
                 onChange={handleJobChange}
@@ -101,12 +104,15 @@ export default function () {
                 className="ml-5 text-white py-2.5 text-sm text-gray-500 bg-transparent border-0  border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               >
                 <option value="">What type of work</option>
-                {jobs &&
+                {jobs && jobs.data && jobs.data.data ? (
                   jobs.data.data.map((job) => (
                     <option key={job.id} value={job.id}>
                       {job.type}
                     </option>
-                  ))}
+                  ))
+                ) : (
+                  <option disabled>No jobs available</option>
+                )}
               </select>
               <input
                 type="date"

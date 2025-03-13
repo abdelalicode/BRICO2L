@@ -15,7 +15,7 @@ export default function WorkerProfile() {
   useEffect(() => {
     const fetchWorker = async () => {
       const response = await Api.getWorker(id);
-      setWorker(response.data);
+      setWorker(response.data.data);
       setLoading(false);
     };
 
@@ -98,7 +98,7 @@ export default function WorkerProfile() {
                     </div>
                     <div className="lg:mr-4 p-3 text-center">
                       <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                        89
+                        9
                       </span>
                       <span className="text-sm text-blueGray-400">Reviews</span>
                     </div>
@@ -106,14 +106,17 @@ export default function WorkerProfile() {
                 </div>
               </div>
               <div className="text-center mt-12">
-                <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-                  {worker.firstname} {worker.lastname}
+                <h3 className="text-4xl font-semibold leading-normal  text-blueGray-700 mb-2">
+                  {worker.firstName} {worker.lastName}
+                </h3>
+                <h3 className="text-sm leading-normal mb-2 text-blueGray-900">
+                  Phone: {worker.phone}
                 </h3>
                 <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                   <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                  {worker.job.type}
+                  {worker.profession ? worker.profession : "No profession"}
                 </div>
-                <div className="mb-2 text-blueGray-600 mt-4">
+                <div className="mb-2 text-blueGray-600 mt-2">
                   <div className="flex justify-center">
                     <img
                       width="24"
@@ -121,7 +124,7 @@ export default function WorkerProfile() {
                       src="https://img.icons8.com/ios-filled/50/map-pin.png"
                       alt="map-pin"
                     />
-                    <p>{worker.city.name}</p>
+                    <p>{worker.city ? worker.city : "No city"}</p>
                   </div>
                 </div>
               </div>

@@ -25,7 +25,7 @@ export default function Cities() {
         {cities.data.map((city, key) => (
           <div
             key={city.id}
-            className="relative grid h-[18em] w-full max-w-[26em] flex-col items-end justify-center overflow-hidden rounded-xl bg-white bg-clip-border text-center text-gray-700"
+            className="relative grid h-[18em] w-full max-w-[22em] flex-col items-end justify-center overflow-hidden rounded-xl bg-white bg-clip-border text-center text-gray-700"
           >
             <div className="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-[url('https://img.freepik.com/photos-gratuite/beaux-immeubles-grande-hauteur-angle-eleve-du-ciel_23-2149444947.jpg?w=360&t=st=1713272536~exp=1713273136~hmac=66dab0789d1aad74118cdab90120ec09cc112ad3929e54b4eb80ce2c501a43d5')] bg-cover bg-clip-border bg-center text-gray-700 shadow-none">
               <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50"></div>
