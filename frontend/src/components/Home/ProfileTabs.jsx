@@ -54,14 +54,14 @@ function ProfileTabs(props) {
                   <div className="flex items-center space-x-8">
                     <div className="flex space-x-8 items-center">
                       <h5 className="text-xl font-bold text-gray-900 dark:text-white capitalize">
-                        {review.client.firstname} {review.client.lastname}
+                        {review.client.firstName} {review.client.lastName}
                       </h5>
 
                       <StarRating rating={review.stars} />
                     </div>
                   </div>
                   <p className="text-gray-700 text-sm ">
-                    {new Date(review.created_at).toLocaleDateString()}
+                    {new Date(review.date).toLocaleDateString()}
                   </p>
                   <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">
                     {review.content}

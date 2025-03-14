@@ -3,6 +3,7 @@ package com.sneakpeak.bricool.reviews;
 import com.sneakpeak.bricool.config.JwtService;
 import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.user.UserService;
+import com.sneakpeak.bricool.user.Worker;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,11 @@ public class ReviewController {
 
         String username = jwtService.extractUsername(token);
         User client = userService.getClient(username);
+        Worker worker = userService.getWorker(review.getWorker().getId())
+                .orElseThrow(() -> new RuntimeException("Worker not found"));
         review.setClient(client);
+        review.setWorker(worker);
+        System.out.println(review);
 
         Review createdReview = reviewService.addReview(review);
 

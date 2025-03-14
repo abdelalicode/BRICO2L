@@ -32,7 +32,6 @@ public class User implements UserDetails {
 
     private Integer age;
 
-    @Column(unique = true)
     private String email;
 
     private String password;
@@ -50,6 +49,8 @@ public class User implements UserDetails {
     @CreationTimestamp
     private LocalDateTime memberSince;
 
+    @Version
+    private Long version;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

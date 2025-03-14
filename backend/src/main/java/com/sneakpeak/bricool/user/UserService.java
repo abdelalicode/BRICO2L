@@ -1,9 +1,11 @@
 package com.sneakpeak.bricool.user;
 
 import com.sneakpeak.bricool.exception.NotFoundException;
+import com.sneakpeak.bricool.profession.Profession;
 import com.sneakpeak.bricool.role.Role;
 import com.sneakpeak.bricool.role.RoleRepository;
 import com.sneakpeak.bricool.role.RoleType;
+import com.sneakpeak.bricool.token.TokenRepository;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,13 +23,15 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final TokenRepository tokenRepository;
 
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.modelMapper = modelMapper;
+        this.tokenRepository = tokenRepository;
     }
 
     @Transactional
@@ -77,17 +81,37 @@ public class UserService {
                 .orElse(null);
     }
 
-    public User updateUserRole(@Valid UserDTO userDTO, String str) {
-        User existingUser = userRepository.findByEmail(str)
+    @Transactional
+    public User updateUserRole(@Valid UserDTO userDTO, String email) {
+        User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
-        Role role = roleRepository.findById(userDTO.getRole_id()).orElse(null);
+        Role role = roleRepository.findById(userDTO.getRole_id())
+                .orElseThrow(() -> new NotFoundException("Role not found"));
 
-        if(role != null) {
+        if (existingUser instanceof Worker) {
             existingUser.setRole(role);
             return userRepository.save(existingUser);
         }
-        return null;
+
+        Worker worker = new Worker();
+        worker.setFirstName(existingUser.getFirstName());
+        worker.setLastName(existingUser.getLastName());
+        worker.setAge(existingUser.getAge());
+        worker.setEmail(existingUser.getEmail());
+        worker.setPassword(existingUser.getPassword());
+        worker.setPhone(existingUser.getPhone());
+        worker.setAddress(existingUser.getAddress());
+        worker.setMemberSince(existingUser.getMemberSince());
+        worker.setRole(role);
+        worker.setAvailable(true);
+
+
+        tokenRepository.deleteByUserId(existingUser.getId());
+
+        userRepository.delete(existingUser);
+
+        return userRepository.save(worker);
     }
 
     public List<User> findAllWorkers() {

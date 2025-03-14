@@ -1,9 +1,10 @@
 package com.sneakpeak.bricool.reviews;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sneakpeak.bricool.user.User;
+import com.sneakpeak.bricool.user.UserReturnDTO;
 import com.sneakpeak.bricool.user.Worker;
+import com.sneakpeak.bricool.user.WorkerReturnDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,10 +14,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Entity
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
+public class ReviewReturnDTO {
+
     private Long id;
 
     private int stars;
@@ -26,15 +26,9 @@ public class Review {
     @CreationTimestamp
     private LocalDateTime date;
 
+    private UserReturnDTO client;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private User client;
-
-    @ManyToOne
-    @JoinColumn(name = "worker_id")
     @JsonIgnore
     private Worker worker;
-
 
 }

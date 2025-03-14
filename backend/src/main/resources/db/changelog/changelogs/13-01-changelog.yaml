@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1741903537689-2
+      author: hp
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  defaultValueComputed: 'true'
+                  name: available
+                  type: ''
+            tableName: users
+  - changeSet:
+      id: 1741903537689-1
+      author: hp
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(31)
+            columnName: user_type
+            tableName: users
+

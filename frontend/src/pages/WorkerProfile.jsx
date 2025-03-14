@@ -133,7 +133,7 @@ export default function WorkerProfile() {
                   <div className="w-full lg:w-9/12 px-4">
                     <ProfileTabs
                       worker_offers={worker.worker_offers}
-                      reviews_as_worker={worker.reviews_as_worker}
+                      reviews_as_worker={worker.reviews}
                     />
                   </div>
                 </div>

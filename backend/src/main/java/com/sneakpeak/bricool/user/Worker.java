@@ -1,5 +1,6 @@
 package com.sneakpeak.bricool.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sneakpeak.bricool.city.City;
 import com.sneakpeak.bricool.profession.Profession;
 import com.sneakpeak.bricool.reviews.Review;
@@ -19,6 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Worker extends User {
 
+        @Column(columnDefinition = "boolean default true")
+        private boolean available;
+
         @ManyToOne
         @JoinColumn(name = "profession_id")
         private Profession profession;
@@ -29,6 +33,7 @@ public class Worker extends User {
         private City city;
 
         @OneToMany(mappedBy = "worker")
+        @JsonManagedReference
         private List<Review> reviews;
 
 
