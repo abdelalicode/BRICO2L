@@ -14,9 +14,15 @@ export default function ClientsRequests() {
 
   useEffect(() => {
     const fetchRequests = async () => {
-      const response = await Api.getRequests();
-      setRequests(response.data);
-      setLoading(false);
+      try {
+        const response = await Api.getRequests();
+        setRequests(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+      
     };
     fetchRequests();
   }, []);
@@ -30,7 +36,7 @@ export default function ClientsRequests() {
 
   const fetchUpdatedRequests = async () => {
     const response = await Api.getRequests();
-    setRequests(response.data);
+    setRequests(response.data.data);
     setLoading(false);
   };
 
@@ -49,7 +55,7 @@ export default function ClientsRequests() {
 
   return (
     <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mb-5">
-      {requests.map((request) => (
+      {requests && requests.map((request) => (
         <Card
           className="max-w-sm shadow-xl bg-slate-700 border-0"
           key={request.id}
@@ -63,13 +69,13 @@ export default function ClientsRequests() {
           </div>
           <h5 className="text-2xl font-bold tracking-tight text-gray-50 dark:text-white capitalize">
           <Link to={`/clienttoworker/${request.client.id}`}>
-                          {request.client.firstname} {request.client.lastname}
+                          {request.client.firstName} {request.client.lastName}
            </Link>
           </h5>
           <p className="font-normal text-gray-50 dark:text-gray-400">
           {request.description}
           </p>
-          {request.worker_id == null ?
+          {request.worker == null ?
           <Button onClick={() => TakeRequest(request.id)}  className="hover:bg-slate-800 focus:ring-0">
             Accept This Request
             <svg
@@ -85,7 +91,9 @@ export default function ClientsRequests() {
               />
             </svg>
             
-          </Button> : <span className="bg-red-100 w-2/3 text-center text-red-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300">{user.id === request.worker_id ? "Request Taken By You" : "Already Taken By A Worker"}</span>
+          </Button>
+           : ""
+          //  <span className="bg-red-100 w-2/3 text-center text-red-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300">{request.id === request.worker.id ? "Request Taken By You" : "Already Taken By A Worker"}</span>
 
            }
         </Card>

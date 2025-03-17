@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -19,6 +22,11 @@ public class Request {
     private Long id;
 
     private String city;
+
+    private String description;
+
+    @CreationTimestamp
+    private LocalDateTime created_at;
 
     @Column(columnDefinition = "boolean default false")
     private boolean isAccepted;
