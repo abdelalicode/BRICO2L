@@ -55,7 +55,7 @@ export default function RequestJob({ transactions, loading }) {
       }
       setTimeout(() => {
         setPopupInfo({ message: "", color: "" });
-      }, 5000);
+      }, 6000);
     } 
   };
 
