@@ -43,19 +43,20 @@ export default function RequestJob({ transactions, loading }) {
         formData.city,
         formData.description
       );
-      console.log(response);
       setPopupInfo({ message: response.data.message, color: "success" });
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        setPopupInfo({ message: error.response.data.error, color: "error" });
-      } else {
-        setPopupInfo({ message: "An error occurred.", color: "error" });
-      }
-    } finally {
       setTimeout(() => {
         setPopupInfo({ message: "", color: "" });
       }, 3000);
-    }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setPopupInfo({ message: error.response.data.message, color: "error" });
+      } else {
+        setPopupInfo({ message: "An error occurred.", color: "error" });
+      }
+      setTimeout(() => {
+        setPopupInfo({ message: "", color: "" });
+      }, 5000);
+    } 
   };
 
   return (
