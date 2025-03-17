@@ -28,7 +28,5 @@ public class ReviewReturnDTO {
 
     private UserReturnDTO client;
 
-    @JsonIgnore
-    private Worker worker;
 
 }

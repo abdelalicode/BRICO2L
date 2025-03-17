@@ -4,6 +4,7 @@ import com.sneakpeak.bricool.config.JwtService;
 import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.user.UserService;
 import com.sneakpeak.bricool.user.Worker;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,21 +17,23 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final JwtService jwtService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
-    public ReviewController(ReviewService reviewService, JwtService jwtService, UserService userService) {
+    public ReviewController(ReviewService reviewService, JwtService jwtService, UserService userService, ModelMapper modelMapper) {
         this.reviewService = reviewService;
         this.jwtService = jwtService;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping
-    public ResponseEntity<Object> addReview(@RequestBody Review review, @RequestHeader("Authorization") String header) {
+    public ResponseEntity<Object> addReview(@RequestBody Review review, @RequestParam("workerId") Long id, @RequestHeader("Authorization") String header) {
 
         String token = header.replace("Bearer ", "");
 
         String username = jwtService.extractUsername(token);
         User client = userService.getClient(username);
-        Worker worker = userService.getWorker(review.getWorker().getId())
+        Worker worker = userService.getWorker(id)
                 .orElseThrow(() -> new RuntimeException("Worker not found"));
         review.setClient(client);
         review.setWorker(worker);
@@ -42,7 +45,10 @@ public class ReviewController {
             return ResponseEntity.status(400).body("Review not created");
         }
 
-        return ResponseEntity.status(201).body(createdReview);
+        ReviewReturnDTO reviewReturnDTO = modelMapper.map(createdReview, ReviewReturnDTO.class);
+
+
+        return ResponseEntity.status(201).body(reviewReturnDTO);
     }
 
 
@@ -88,13 +94,17 @@ public class ReviewController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteReview(Long id) {
-        boolean isDeleted = reviewService.deleteReview(id);
+    public ResponseEntity<Object> deleteReview(@PathVariable Long id, @RequestHeader("Authorization") String header) {
+        String token = header.replace("Bearer ", "");
+
+        String username = jwtService.extractUsername(token);
+        User auth = userService.getClient(username);
+
+        boolean isDeleted = reviewService.deleteReview(id, auth.getId());
 
         if(!isDeleted) {
             return ResponseEntity.status(404).body("Review not found");
         }
-
         return ResponseEntity.status(204).build();
     }
 }

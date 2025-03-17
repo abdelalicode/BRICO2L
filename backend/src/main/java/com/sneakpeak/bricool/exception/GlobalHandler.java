@@ -17,15 +17,22 @@ public class GlobalHandler {
                 HttpStatus.NOT_FOUND
         );
     }
-//
-//    @ExceptionHandler(NotEligibleException.class)
-//    public ResponseEntity<Object> handleNotEligibleException(NotEligibleException ex) {
-//        return ResponseHandler.errorBuilder(
-//                ex.getMessage(),
-//                HttpStatus.FORBIDDEN,
-//                "403"
-//        );
-//    }
+
+   @ExceptionHandler(NotAuthorizedException.class)
+   public ResponseEntity<Object> handleNotEligibleException(NotAuthorizedException ex) {
+     return ResponseHandler.errorBuilder(
+            ex.getMessage(),
+               HttpStatus.FORBIDDEN
+      );
+  }
+
+    @ExceptionHandler(NoCityException.class)
+    public ResponseEntity<Object> handleNoCityException(NoCityException ex) {
+        return ResponseHandler.errorBuilder(
+                ex.getMessage(),
+                HttpStatus.FORBIDDEN
+        );
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex) {

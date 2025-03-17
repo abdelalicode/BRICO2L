@@ -14,10 +14,10 @@ export default function Jobs() {
   return (
     <>
     <div className="mt-12 mb-24 ">
-      <h1 className="text-center mb-16 m-4 text-4xl">AVAILABLE JOBS</h1>
+      <h1 className="text-center mb-16 m-4 text-2xl">AVAILABLE JOBS</h1>
       <div className="flex flex-wrap gap-4 justify-center">
-        {jobs.data.data ? ( jobs.data.data.map((job, key) => (
-          <div className="relative grid h-[18em] w-full max-w-[26em] flex-col items-end justify-center overflow-hidden rounded-xl bg-white bg-clip-border text-center text-gray-700">
+        {jobs ? ( jobs.map((job, key) => (
+          <div className="relative grid h-[16rem] w-[24rem] flex-col items-end justify-center overflow-hidden rounded-xl bg-white bg-clip-border text-center text-gray-700 transform transition-transform duration-300 hover:scale-105">
             <div className="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-[url('https://img.freepik.com/photos-gratuite/portrait-ingenieur-civil-masculin-fond-chantier-construction_1057-37118.jpg?t=st=1713271384~exp=1713274984~hmac=1aedd6f7d204f9c7f0ad25a20fdf0582e90a0247b2a760b59bdcfa72baa1e4ef&w=1060')] bg-cover bg-clip-border bg-center text-gray-700 shadow-none">
               <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50"></div>
             </div>

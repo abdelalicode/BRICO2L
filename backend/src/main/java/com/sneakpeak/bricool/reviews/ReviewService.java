@@ -1,8 +1,10 @@
 package com.sneakpeak.bricool.reviews;
 
+import com.sneakpeak.bricool.exception.NotAuthorizedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ReviewService {
@@ -32,16 +34,20 @@ public class ReviewService {
         return reviewRepository.save(reviewToUpdate);
     }
 
-    public boolean deleteReview(Long id) {
+    public boolean deleteReview(Long id, Long authId) {
         Review review = reviewRepository.findById(id).orElse(null);
-        if (review == null) {
+
+        if(review == null) {
             return false;
+        }
+        if(!Objects.equals(review.getClient().getId(), authId)) {
+            throw new NotAuthorizedException("You are not authorized to delete this review");
         }
         reviewRepository.delete(review);
         return true;
     }
 
-    public Object getAllReviews() {
+    public List<Review> getAllReviews() {
         return reviewRepository.findAll();
     }
 

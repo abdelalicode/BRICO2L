@@ -1,5 +1,6 @@
 package com.sneakpeak.bricool.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sneakpeak.bricool.city.City;
 import com.sneakpeak.bricool.profession.Profession;
@@ -23,7 +24,6 @@ public class WorkerReturnDTO {
     private LocalDateTime memberSince;
     private Profession profession;
     private City city;
-    @JsonManagedReference
     private List<ReviewReturnDTO> reviews;
     private boolean available;
 }

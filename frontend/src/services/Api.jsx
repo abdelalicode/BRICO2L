@@ -1,5 +1,4 @@
 import { axiosClient } from "../api/axios";
-import SendTransaction from "../pages/RequestJob";
 
 const Api = {
   // getCsrfToken: async () => {
@@ -54,14 +53,13 @@ const Api = {
 
    
   getRequests: async () => {
-    return await axiosClient.get("/api/request");
+    return await axiosClient.get("/api/v1/requests");
   },
 
   getWorkerOffers: async () => {
     return await axiosClient.get("/api/workeroffers");
   },
 
-  
 
   TakeRequest: async (id) => {
     return await axiosClient.put("/api/takerequest", {id});
@@ -80,7 +78,7 @@ const Api = {
   },
 
   SendRequestJob: async (city, description) => {
-      return await axiosClient.post("api/request", {city, description})
+      return await axiosClient.post("api/v1/requests", {city, description})
   },
 
   AddOffer: async (formData) => {
@@ -107,8 +105,12 @@ const Api = {
     return await axiosClient.put("api/professions/"+id, updatedJob )
   },
 
-  SendReview: async (stars, content, worker) => {
-    return await axiosClient.post("api/v1/reviews", {stars, content, worker})
+  SendReview: async (stars, content, id) => {
+    return await axiosClient.post(`api/v1/reviews?workerId=${id}`, {stars, content})
+  },
+
+  deleteReview: async (id) => {
+    return await axiosClient.delete(`api/v1/reviews/${id}`);
   },
 
   UpdatePhone : async (phone, id) => {
@@ -137,6 +139,7 @@ const Api = {
   },
   
   getJobs: async () => {
+
     return await axiosClient.get("api/v1/professions");
   },
 

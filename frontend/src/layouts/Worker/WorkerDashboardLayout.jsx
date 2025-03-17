@@ -37,8 +37,8 @@ export default function WorkerDashboardLayout() {
   };
 
   const logout = async () => {
+    contextLogout();
     Api.logout().then(() => {
-      contextLogout();
       navigate(HOME);
     });
   };

@@ -22,4 +22,8 @@ public class City {
 
     private String name;
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

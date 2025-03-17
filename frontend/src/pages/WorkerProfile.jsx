@@ -12,6 +12,27 @@ export default function WorkerProfile() {
   const [worker, setWorker] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  
+  const handleReviewDeleted = async (reviewId) => {
+    try {
+      await Api.deleteReview(reviewId);
+      setWorker(prevWorker => ({
+        ...prevWorker,
+        reviews: prevWorker.reviews.filter(review => review.id !== reviewId)
+      }));
+    } catch (error) {
+      console.error('Error deleting review:', error);
+    }
+  };
+
+
+  const handleReviewAdded = (newReview) => {
+    setWorker(prevWorker => ({
+      ...prevWorker,
+      reviews: [...prevWorker.reviews, newReview]
+    }));
+  };
+
   useEffect(() => {
     const fetchWorker = async () => {
       const response = await Api.getWorker(id);
@@ -70,7 +91,7 @@ export default function WorkerProfile() {
                 </div>
                 <div className="w-full flex justify-center lg:items-center   lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center ">
                   <div className="py-6 px-3 mt-32 sm:mt-0">
-                    <ReviewModal worker={worker}  />
+                    <ReviewModal worker={worker}  onReviewAdded={handleReviewAdded} />
 
                     <button
                       className="bg-slate-800 mr-4 mx-4 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
@@ -134,6 +155,7 @@ export default function WorkerProfile() {
                     <ProfileTabs
                       worker_offers={worker.worker_offers}
                       reviews_as_worker={worker.reviews}
+                      handleReviewDeleted={handleReviewDeleted}
                     />
                   </div>
                 </div>

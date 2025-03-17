@@ -43,8 +43,8 @@ export default function HomeContext({ children }) {
     fetchCities();
 
     const fetchJobs = async () => {
-      const jobs = await Api.getJobs();
-      setJobs(jobs);
+      const jobsfetched = await Api.getJobs();
+      setJobs(jobsfetched.data);
       setLoading(false)
     };
 
@@ -54,6 +54,7 @@ export default function HomeContext({ children }) {
     setSelectedJob(selectedJob);
     setSelectedDate(selectedDate);
     setFilteredOffers(filteredOffers);
+
   }, []);
 
 

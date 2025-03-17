@@ -51,10 +51,8 @@ export default function ClientLogin() {
                     const decoded = jwtDecode(value.data.token);
                     const userRole = decoded.role;
 
-                    console.log(userRole)
-                    console.log(decoded)
-
                     window.localStorage.setItem('token', value.data.token)
+                    window.localStorage.setItem('xs', decoded.userId)
 
                     if(userRole.includes("ROLE_CLIENT"))
                     {

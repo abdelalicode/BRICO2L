@@ -37,4 +37,12 @@ public class Worker extends User {
         private List<Review> reviews;
 
 
+        @Override
+        public String toString() {
+                return "Worker{" +
+                        "city=" + city +
+                        ", profession=" + profession +
+                        ", available=" + available +
+                        '}';
+        }
 }

@@ -34,31 +34,6 @@ public class UserService {
         this.tokenRepository = tokenRepository;
     }
 
-    @Transactional
-    public User createUser(User user) {
-
-        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser.isPresent()) {
-            throw new RuntimeException("Email already exists.");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setId(null);
-
-        Role defaultRole = roleRepository.findByname(RoleType.CLIENT);
-        user.setRole(defaultRole);
-
-
-        return userRepository.save(user);
-
-    }
-
-    public Optional<User> validateUser(String email, String password) {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return user;
-        }
-        return Optional.empty();
-    }
 
     public User updateUser(User userInfos, String userMail) {
 

@@ -4,8 +4,11 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import "../../App.css";
 import Api from './../../services/Api';
 
-export default function ReviewModal({ worker }) {
+export default function ReviewModal({ worker , onReviewAdded }) {
   const [openModal, setOpenModal] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+
+  
 
   // const handleCancelRequest = async () => {
   //   console.log(requestid);
@@ -30,23 +33,62 @@ export default function ReviewModal({ worker }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    console.log(formData);
-    console.log(worker);
       const response = await Api.SendReview(
         formData.stars,
         formData.content,
-        worker
+        worker.id
       );
 
-      console.log(response);
+      console.log(response.data);
 
-   setOpenModal(false)
+      const newReview = {
+        id: response.data.id,
+        stars: formData.stars,
+        content: formData.content,
+        date: new Date().toISOString(),
+        client: {
+          id: response.data.client.id,
+          firstName: response.data.client.firstName,
+          lastName: response.data.client.lastName
+        }
+      };
+
+    onReviewAdded(newReview);
+    setFormData({
+      stars: "",
+      content: ""
+    });
+    setOpenModal(false)
+    setShowNotification(true);
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000);
     
   };
 
 
   return (
     <>
+    {showNotification && (
+        <div className="fixed top-72 right-4 z-50 animate-fade-in-down">
+          <div className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center">
+            <svg 
+              className="w-6 h-6 mr-2" 
+              fill="none" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth="2" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Review added successfully!</span>
+          </div>
+        </div>
+      )}
+
       <Button onClick={() => setOpenModal(true)}>
         <button
           className="bg-yellow-400 -mx-3 active:bg-pink-600 uppercase text-slate-800 font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
