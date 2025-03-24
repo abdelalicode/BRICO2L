@@ -18,18 +18,20 @@ export default function WorkerDashboardLayout() {
 
   const { logout: contextLogout } = useUserContext();
 
-  useEffect(() => {
-    const storedUser = window.localStorage.getItem("user");
+   useEffect(() => {
+    const fetchWorkerData = async () => {
+      try {
+        if (user === null) {
+          const response = await Api.getAuthWorker();
+          const userObject = response?.data.data;
+          setUser(userObject);
+        }
+      } catch (error) {
+        console.error('Error fetching worker data:', error);
+      }
+    };
 
-    if (storedUser || user === null) {
-      const userObject = JSON.parse(storedUser);
-      setUser(userObject);
-    }
-
-    console.log(user);
-    if (user && user.role_id === 3 || !authenticated) {
-      navigate(HOME);
-    }
+    fetchWorkerData();
   }, []);
 
   const isClientProfileRoute = () => {
@@ -65,7 +67,7 @@ export default function WorkerDashboardLayout() {
       <main className="px-24 text-white text-md">
         <div className="flex justify-between">
           <p className="text-4xl mb-4 capitalize">
-            Hello {user.firstname} {user.lastname} !
+            Hello {user.firstName} {user.lastName} !
           </p>
           <button
             onClick={logout}

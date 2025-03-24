@@ -30,7 +30,7 @@ export default function Offers({user}) {
   return (
     <div>
       <div className="relative overflow-x-auto shadow-2xl sm:rounded-lg">
-        {user.city_id != null && user.job_id != null ? (
+        {user.city != null && user.profession != null ? (
           <AddOffer fetchUpdatedOffers={fetchUpdatedOffers} />
         ) : (
           <div

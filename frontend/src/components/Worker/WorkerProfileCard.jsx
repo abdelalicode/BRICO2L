@@ -25,7 +25,6 @@ export default function WorkerProfileCard() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await Api.updateWorkerProfile(
-      worker.id,
       selectedCity,
       selectedJob
     );
@@ -35,8 +34,8 @@ export default function WorkerProfileCard() {
   useEffect(() => {
     const fetchWorkerData = async () => {
       const response = await Api.getAuthWorker();
-      setWorker(response.data);
-      setUser(response.data);
+      setWorker(response?.data.data);
+      setUser(response?.data.data);
       setLoading(false);
     };
 
@@ -45,8 +44,8 @@ export default function WorkerProfileCard() {
 
   const getUpdatedAuthWorker = async () => {
     const response = await Api.getAuthWorker();
-    setWorker(response.data);
-    setUser(response.data);
+    setWorker(response?.data.data);
+    setUser(response?.data.data);
   };
 
   if (loading) {
@@ -72,11 +71,11 @@ export default function WorkerProfileCard() {
 
             <div className="w-fit transition-all transform duration-500">
               <h1 className="text-gray-400 capitalize text-xl dark:text-gray-200 font-bold">
-                {worker.firstname} {worker.lastname}
+                {worker.firstName} {worker.lastName}
               </h1>
               <p className="text-gray-400">Email: {worker.email}</p>
-              <p className="text-gray-400">Location: {worker.city.name}</p>
-              <p className="text-gray-400">Job Type: {worker.job.type}</p>
+              <p className="text-gray-400">Location: {worker.city?.name}</p>
+              <p className="text-gray-400">Job Type: {worker.profession?.type}</p>
             </div>
           </div>
           <div className="absolute group-hover:bottom-1 delay-250 -bottom-16 transition-all duration-500 bg-transparent dark:bg-gray-100 right-1 rounded-lg">
@@ -90,9 +89,9 @@ export default function WorkerProfileCard() {
                 >
                   <option value="">Which city</option>
                   {cities &&
-                    cities.data.map((city) => (
+                    cities?.data.map((city) => (
                       <option key={city.id} value={city.id}>
-                        {city.name}
+                        {city?.name}
                       </option>
                     ))}
                 </select>
@@ -103,7 +102,7 @@ export default function WorkerProfileCard() {
                 >
                   <option value="">What type of work</option>
                   {jobs &&
-                    jobs.data.data.map((job) => (
+                    jobs?.map((job) => (
                       <option key={job.id} value={job.id}>
                         {job.type}
                       </option>

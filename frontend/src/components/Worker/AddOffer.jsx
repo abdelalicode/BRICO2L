@@ -1,7 +1,6 @@
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { useState } from "react";
 import Api from "../../services/Api";
-import { FileInput} from "flowbite-react";
 
 export function AddOffer({fetchUpdatedOffers}) {
   const [openModal, setOpenModal] = useState(false);
@@ -10,7 +9,6 @@ export function AddOffer({fetchUpdatedOffers}) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [hourlyRate, setHourlyRate] = useState("");
-  const [image, setImage] = useState(null);
 
   function onCloseModal() {
     setOpenModal(false);
@@ -19,7 +17,6 @@ export function AddOffer({fetchUpdatedOffers}) {
     setStartDate("");
     setEndDate("");
     setHourlyRate("");
-    setFile(null);
   }
 
   const handleSubmit = async (event) => {
@@ -30,8 +27,7 @@ export function AddOffer({fetchUpdatedOffers}) {
     formData.append("start_date", startDate);
     formData.append("end_date", endDate);
     formData.append("hourly_rate", hourlyRate);
-    formData.append("image", image);
-    console.log(formData);
+    
 
     const response = await Api.AddOffer(formData);
     
@@ -115,12 +111,7 @@ export function AddOffer({fetchUpdatedOffers}) {
                   required
                 />
               </div>
-              <div>
-                  <div className="my-2 block">
-                    <Label htmlFor="file-upload" value="Upload your image" />
-                  </div>
-                  <FileInput id="file-upload" onChange={(event) => setImage(event.target.files[0])} />
-              </div>
+            
 
               <div className="w-full">
                 <Button className="bg-slate-800 my-4" type="submit">

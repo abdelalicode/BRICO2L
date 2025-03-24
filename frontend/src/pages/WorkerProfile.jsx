@@ -135,7 +135,7 @@ export default function WorkerProfile() {
                 </h3>
                 <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                   <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                  {worker.profession ? worker.profession : "No profession"}
+                  {worker.profession ? worker.profession.type : "No profession"}
                 </div>
                 <div className="mb-2 text-blueGray-600 mt-2">
                   <div className="flex justify-center">
@@ -145,7 +145,7 @@ export default function WorkerProfile() {
                       src="https://img.icons8.com/ios-filled/50/map-pin.png"
                       alt="map-pin"
                     />
-                    <p>{worker.city ? worker.city : "No city"}</p>
+                    <p>{worker.city ? worker.city.name : "No city"}</p>
                   </div>
                 </div>
               </div>

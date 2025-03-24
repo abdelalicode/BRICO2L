@@ -10,7 +10,7 @@ export default function Workers() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const card = useEffect(() => {
+  useEffect(() => {
     const isAuth = localStorage.getItem("AUTHENTICATED");
 
     if(isAuth === 'false') {
@@ -19,11 +19,12 @@ export default function Workers() {
 
     const fetchWorkers = async () => {
       const response = await Api.getWorkers();
-      console.log(response.data.data);
       setWorkers(response.data.data);
+      
       setLoading(false);
     };
     fetchWorkers();
+    console.log(workers);
   }, []);
 
   if (!workers || loading) {
@@ -36,7 +37,7 @@ export default function Workers() {
     <div className="mt-12 mb-24">
       <h1 className="text-center mb-16 m-4 text-4xl">WORKERS NETWORK</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {workers.map((worker) => (
+      {workers.map((worker) => (
           <section
             key={worker.id}
             class="w-64 mx-auto bg-[#26303D] rounded-xl px-8 py-6 shadow-lg"
@@ -44,7 +45,7 @@ export default function Workers() {
             <Link to={`/worker/${worker.id}`}>
               <div>
                 <div class="flex items-center justify-between">
-                  <span class="text-gray-400 text-sm">{worker.profession ? worker.profession: "No Profession Yet"}</span>
+                  <span class="text-gray-400 text-sm">{worker.profession ? worker.profession.type: "No Profession Yet"}</span>
                   <span class="text-emerald-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -63,15 +64,9 @@ export default function Workers() {
                   </span>
                 </div>
                 <div class="mt-6 w-fit mx-auto">
-                {worker.profile_image_url ? (
-                    <img
-                      src={worker.profile_image_url}
-                      className="rounded-full w-28"
-                      alt="profile picture"
-                    />
-                  ) : (
+                
                     <img width="100" height="100" src="https://img.icons8.com/ios-filled/100/EBEBEB/user-male-circle.png" alt="user-male-circle"/>
-                  )}
+                  
                 </div>
 
                 <div class="mt-8 ">

@@ -1,9 +1,10 @@
-package com.sneakpeak.bricool.user;
+package com.sneakpeak.bricool.worker;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sneakpeak.bricool.city.City;
 import com.sneakpeak.bricool.profession.Profession;
 import com.sneakpeak.bricool.reviews.Review;
+import com.sneakpeak.bricool.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

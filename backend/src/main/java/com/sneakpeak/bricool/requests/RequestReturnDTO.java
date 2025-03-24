@@ -1,8 +1,7 @@
 package com.sneakpeak.bricool.requests;
 
 import com.sneakpeak.bricool.user.ClientReturnDTO;
-import com.sneakpeak.bricool.user.User;
-import com.sneakpeak.bricool.user.WorkerDashBoardReturnDTO;
+import com.sneakpeak.bricool.worker.WorkerDashBoardReturnDTO;
 import lombok.Getter;
 import lombok.Setter;
 

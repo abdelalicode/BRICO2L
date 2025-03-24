@@ -1,7 +1,8 @@
-package com.sneakpeak.bricool.user;
+package com.sneakpeak.bricool.worker;
 
 import com.sneakpeak.bricool.city.City;
 import com.sneakpeak.bricool.profession.Profession;
+import com.sneakpeak.bricool.profession.ProfessionReturnDTO;
 import com.sneakpeak.bricool.reviews.ReviewReturnDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,14 +13,15 @@ import java.util.List;
 
 @Setter
 @Getter
-public class WorkerDashBoardReturnDTO {
+public class WorkerReturnDTO {
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private LocalDateTime memberSince;
-    private Profession profession;
+    private ProfessionReturnDTO profession;
     private City city;
+    private List<ReviewReturnDTO> reviews;
     private boolean available;
 }

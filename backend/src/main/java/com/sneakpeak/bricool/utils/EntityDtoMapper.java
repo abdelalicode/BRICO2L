@@ -1,8 +1,13 @@
 package com.sneakpeak.bricool.utils;
 
 
+import com.sneakpeak.bricool.city.City;
+import com.sneakpeak.bricool.city.CityRepository;
+import com.sneakpeak.bricool.profession.Profession;
 import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.user.UserReturnDTO;
+import com.sneakpeak.bricool.worker.Worker;
+import com.sneakpeak.bricool.worker.WorkerInfoDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -15,8 +20,9 @@ import java.util.stream.Collectors;
 @Component
 public class EntityDtoMapper {
     private final ModelMapper modelMapper;
+    private final CityRepository cityRepository;
 
-    public EntityDtoMapper(ModelMapper modelMapper) {
+    public EntityDtoMapper(ModelMapper modelMapper, CityRepository cityRepository) {
         this.modelMapper = modelMapper;
 
         modelMapper.typeMap(User.class, UserReturnDTO.class).addMappings(mapper -> {
@@ -24,8 +30,7 @@ public class EntityDtoMapper {
 
                 }
         );
-
-
+        this.cityRepository = cityRepository;
     }
 
     public <D, T> D mapToDto(T entity, Class<D> dtoClass) {
@@ -47,4 +52,6 @@ public class EntityDtoMapper {
                 .map(dto -> mapToEntity(dto, entityClass))
                 .collect(Collectors.toList());
     }
+
+
 }

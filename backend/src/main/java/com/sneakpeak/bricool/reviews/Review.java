@@ -1,9 +1,8 @@
 package com.sneakpeak.bricool.reviews;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sneakpeak.bricool.user.User;
-import com.sneakpeak.bricool.user.Worker;
+import com.sneakpeak.bricool.worker.Worker;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

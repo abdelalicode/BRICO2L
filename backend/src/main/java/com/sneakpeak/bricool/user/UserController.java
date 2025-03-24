@@ -2,15 +2,14 @@ package com.sneakpeak.bricool.user;
 
 import com.sneakpeak.bricool.config.JwtService;
 import com.sneakpeak.bricool.permission.PermissionService;
-import com.sneakpeak.bricool.permission.PermissionType;
 import com.sneakpeak.bricool.response.ResponseHandler;
 import com.sneakpeak.bricool.utils.EntityDtoMapper;
-import com.sneakpeak.bricool.utils.TokenUtil;
+import com.sneakpeak.bricool.worker.Worker;
+import com.sneakpeak.bricool.worker.WorkerReturnDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +38,7 @@ public class UserController {
             User userInfos = mapper.mapToEntity(userDTO, User.class);
 
 
-        String token = header.replace("Bearer ", "");
+            String token = header.replace("Bearer ", "");
 
             String str = jwtService.extractUsername(token);
 
@@ -96,6 +95,21 @@ public class UserController {
         Optional<Worker> worker = userService.getWorker(id);
         if(worker.isPresent()) {
             WorkerReturnDTO workerDTO = mapper.mapToDto(worker.get(), WorkerReturnDTO.class);
+            return ResponseHandler.responseBuilder("Worker", HttpStatus.OK, workerDTO);
+        }
+        return ResponseHandler.responseBuilder("Worker", HttpStatus.NOT_FOUND, "Worker not found");
+    }
+
+    @GetMapping("/authworker")
+    @PreAuthorize("hasRole('ROLE_WORKER')")
+    public ResponseEntity<Object> getAuthWorker(@RequestHeader("Authorization") String header) {
+        String token = header.replace("Bearer ", "");
+
+        String username = jwtService.extractUsername(token);
+        Optional<Worker> worker = userService.getWorker(username);
+
+        if(worker.isPresent()) {
+            WorkerReturnDTO workerDTO = mapper.mapToDto(worker, WorkerReturnDTO.class);
             return ResponseHandler.responseBuilder("Worker", HttpStatus.OK, workerDTO);
         }
         return ResponseHandler.responseBuilder("Worker", HttpStatus.NOT_FOUND, "Worker not found");

@@ -9,20 +9,16 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profession {
+public class ProfessionReturnDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
 
     private String type;
 
-    @OneToMany(mappedBy = "profession")
-    private List<Worker> workers;
 
 }

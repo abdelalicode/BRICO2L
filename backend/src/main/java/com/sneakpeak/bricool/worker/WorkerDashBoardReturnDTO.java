@@ -1,21 +1,16 @@
-package com.sneakpeak.bricool.user;
+package com.sneakpeak.bricool.worker;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sneakpeak.bricool.city.City;
 import com.sneakpeak.bricool.profession.Profession;
-import com.sneakpeak.bricool.reviews.Review;
-import com.sneakpeak.bricool.reviews.ReviewReturnDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Setter
 @Getter
-public class WorkerReturnDTO {
+public class WorkerDashBoardReturnDTO {
     private Long id;
     private String firstName;
     private String lastName;
@@ -24,6 +19,5 @@ public class WorkerReturnDTO {
     private LocalDateTime memberSince;
     private Profession profession;
     private City city;
-    private List<ReviewReturnDTO> reviews;
     private boolean available;
 }

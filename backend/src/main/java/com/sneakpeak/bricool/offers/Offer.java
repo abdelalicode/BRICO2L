@@ -1,4 +1,5 @@
-package com.sneakpeak.bricool.requests;
+package com.sneakpeak.bricool.offers;
+
 import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.worker.Worker;
 import jakarta.persistence.*;
@@ -6,38 +7,38 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Request {
+public class Offer {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String city;
+    private String title;
 
     private String description;
 
-    @CreationTimestamp
-    private LocalDateTime created_at;
+    private LocalDate startDate;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean isAccepted;
+    private LocalDate endDate;
+
+    @Column(precision = 4, scale = 2)
+    private BigDecimal hourlyRate;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private User client;
+    private User client ;
 
     @ManyToOne
-    @JoinColumn(name = "worker_id", nullable = true)
+    @JoinColumn(name = "worker_id")
     private Worker worker;
-
-
 }

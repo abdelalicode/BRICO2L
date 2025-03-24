@@ -3,7 +3,7 @@ package com.sneakpeak.bricool.reviews;
 import com.sneakpeak.bricool.config.JwtService;
 import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.user.UserService;
-import com.sneakpeak.bricool.user.Worker;
+import com.sneakpeak.bricool.worker.Worker;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

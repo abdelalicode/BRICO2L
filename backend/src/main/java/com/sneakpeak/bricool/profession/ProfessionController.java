@@ -1,6 +1,8 @@
 package com.sneakpeak.bricool.profession;
 
 
+import com.sneakpeak.bricool.utils.EntityDtoMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,9 +15,11 @@ import java.util.List;
 public class ProfessionController {
 
     private final ProfessionService professionService;
+    private final ModelMapper modelMapper;
 
-    public ProfessionController(ProfessionService professionService) {
+    public ProfessionController(ProfessionService professionService, ModelMapper modelMapper) {
         this.professionService = professionService;
+        this.modelMapper = modelMapper;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -26,9 +30,12 @@ public class ProfessionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Profession>> getAllProfessions() {
+    public ResponseEntity<List<ProfessionReturnDTO>> getAllProfessions() {
         List<Profession> professions = professionService.getAllProfessions();
-        return ResponseEntity.ok(professions);
+        List<ProfessionReturnDTO> dtoList = professions.stream()
+                .map(profession -> modelMapper.map(profession, ProfessionReturnDTO.class))
+                .toList();
+        return ResponseEntity.ok(dtoList);
     }
 
     @GetMapping("/{id}")

@@ -40,7 +40,7 @@ const Api = {
   },
 
   getWorker: async (id) => {
-    return await axiosClient.get(`/api/v1/users/worker/${id}`);
+    return await axiosClient.get(`/api/v1/workers/${id}`);
   },
 
   getClientToWorker: async (id) => {
@@ -48,7 +48,7 @@ const Api = {
   },
 
   getWorkers: async () => {
-    return await axiosClient.get("/api/v1/users/workers");
+    return await axiosClient.get("/api/v1/workers");
   },
 
    
@@ -70,11 +70,11 @@ const Api = {
   },
 
   getAuthWorker : async () => {
-    return await axiosClient.get("/api/authworker/");
+    return await axiosClient.get("/api/v1/workers/authworker");
   },
 
-  updateWorkerProfile: async (userId, city_id, job_id) => {
-    return await axiosClient.put(`/api/user/${userId}`, { city_id, job_id});
+  updateWorkerProfile: async (city_id, job_id) => {
+    return await axiosClient.patch('/api/v1/workers/update-wokerprofile', { city_id, job_id});
   },
 
   SendRequestJob: async (city, description) => {
@@ -82,11 +82,11 @@ const Api = {
   },
 
   AddOffer: async (formData) => {
-    return await axiosClient.post("api/offer", formData , {
+    return await axiosClient.post("api/v1/offers", formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
-    })
+    });
   },
 
   UpdateProfileAvatar : async (formData) => {

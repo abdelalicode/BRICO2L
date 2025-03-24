@@ -1,15 +1,14 @@
 package com.sneakpeak.bricool.user;
 
 import com.sneakpeak.bricool.exception.NotFoundException;
-import com.sneakpeak.bricool.profession.Profession;
 import com.sneakpeak.bricool.role.Role;
 import com.sneakpeak.bricool.role.RoleRepository;
 import com.sneakpeak.bricool.role.RoleType;
 import com.sneakpeak.bricool.token.TokenRepository;
+import com.sneakpeak.bricool.worker.Worker;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,12 +94,20 @@ public class UserService {
                 .toList();
     }
 
-    public Optional<Worker> getWorker(Long id) {
-        Optional<User> user = userRepository.findById(id);
+    public Optional<Worker> getWorker(Object workerAttribute) {
+
+        if(workerAttribute instanceof String) {
+            Optional<User> user = userRepository.findByEmail((String) workerAttribute);
+            if (user.isPresent() && user.get() instanceof Worker) {
+                return Optional.of((Worker) user.get());
+            }
+        }
+        Optional<User> user = userRepository.findById((Long) workerAttribute);
         if (user.isPresent() && user.get() instanceof Worker) {
             return Optional.of((Worker) user.get());
         }
         return Optional.empty();
     }
+
 
 }
