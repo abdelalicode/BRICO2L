@@ -31,6 +31,9 @@ public class Offer {
 
     private LocalDate endDate;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean canceled;
+
     @Column(precision = 4, scale = 2)
     private BigDecimal hourlyRate;
 

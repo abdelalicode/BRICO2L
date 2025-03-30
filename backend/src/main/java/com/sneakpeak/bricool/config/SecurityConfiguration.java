@@ -35,14 +35,15 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private static final String[] WHITE_LIST_URL = {"/auth/**", "/cities/**", "/professions/**"};
+    private static final String[] WHITE_LIST_URL = {"/auth/**", "/cities/**", "/professions/**", "/offers", "/reviews"};
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
+                        req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .requestMatchers("/api/v1/worker/**").hasAnyRole(ADMIN.name(), WORKER.name())
                                 .anyRequest()

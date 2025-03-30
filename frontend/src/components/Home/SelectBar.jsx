@@ -43,8 +43,9 @@ export default function () {
 
   const offersby = async () => {
     const data = await Api.filterOffers(selectedCity, selectedJob, selectedDate)
-      setFilteredOffers(data.data);
-      setLoading(false)
+    console.log(data.data.data);
+    setFilteredOffers(data.data.data);
+    setLoading(false)
   };
 
 
@@ -52,7 +53,7 @@ export default function () {
     <>
       <div className="grid grid-cols-2 gap-4 my-24">
 
-          <div className="mt-2  text-[12px] min-w-[558px] min-h-[60px] bg-[#26303D] rounded-lg  backdrop-blur-xl flex items-center">
+          <div className="mt-2  text-[12px] min-w-[680px] min-h-[60px] bg-[#26303D] rounded-lg  backdrop-blur-xl flex items-center">
             <form onSubmit={handleSubmit}>
               <select
                 onChange={handleCityChange}
@@ -74,7 +75,7 @@ export default function () {
               >
                 <option value="">What type of work</option>
                 {jobs &&
-                  jobs.data.data.map((job) => (
+                  jobs.map((job) => (
                     <option key={job.id} value={job.id}>
                       {job.type}
                     </option>

@@ -1,5 +1,8 @@
 package com.sneakpeak.bricool.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sneakpeak.bricool.requests.RequestClientDTO;
+import com.sneakpeak.bricool.reviews.ReviewClientDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +22,9 @@ public class UserReturnDTO {
     private String address;
     private LocalDateTime memberSince;
     private String roleName;
+
+    @JsonProperty("reviews")
+    private List<ReviewClientDTO> reviewsAsClient;
+    private List<RequestClientDTO> requests;
 //    private List<String> ui;
 }

@@ -35,17 +35,17 @@ public class UserController {
 
     @PatchMapping("/update-profile")
     public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDTO userDTO, @RequestHeader("Authorization") String header) {
-            User userInfos = mapper.mapToEntity(userDTO, User.class);
+        User userInfos = mapper.mapToEntity(userDTO, User.class);
 
 
-            String token = header.replace("Bearer ", "");
+        String token = header.replace("Bearer ", "");
 
-            String str = jwtService.extractUsername(token);
+        String str = jwtService.extractUsername(token);
 
-            User updatedUser = userService.updateUser(userInfos, str);
+        User updatedUser = userService.updateUser(userInfos, str);
 
-            UserReturnDTO createdUserDTO = mapper.mapToDto(updatedUser, UserReturnDTO.class);
-            return ResponseHandler.responseBuilder("Updated successfully", HttpStatus.CREATED, createdUserDTO);
+        UserReturnDTO createdUserDTO = mapper.mapToDto(updatedUser, UserReturnDTO.class);
+        return ResponseHandler.responseBuilder("Updated successfully", HttpStatus.CREATED, createdUserDTO);
     }
 
 
@@ -66,15 +66,14 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> getAllUsers(HttpServletRequest request) {
 
-            Optional<List<User>> allUsersOptional = userService.findAllUsers();
-            if(allUsersOptional.isEmpty()) {
-                return ResponseHandler.responseBuilder("All Users List", HttpStatus.OK, "No users found");
-            }
-            else  {
-                List<User> allUsers = allUsersOptional.get();
-                List<UserReturnDTO> userDTOs = mapper.mapToEntityList(allUsers, UserReturnDTO.class);
-                return ResponseHandler.responseBuilder("All Users List", HttpStatus.OK, userDTOs);
-            }
+        Optional<List<User>> allUsersOptional = userService.findAllUsers();
+        if (allUsersOptional.isEmpty()) {
+            return ResponseHandler.responseBuilder("All Users List", HttpStatus.OK, "No users found");
+        } else {
+            List<User> allUsers = allUsersOptional.get();
+            List<UserReturnDTO> userDTOs = mapper.mapToEntityList(allUsers, UserReturnDTO.class);
+            return ResponseHandler.responseBuilder("All Users List", HttpStatus.OK, userDTOs);
+        }
 
     }
 
@@ -93,7 +92,7 @@ public class UserController {
     @GetMapping("/worker/{id}")
     public ResponseEntity<Object> getWorker(@PathVariable Long id) {
         Optional<Worker> worker = userService.getWorker(id);
-        if(worker.isPresent()) {
+        if (worker.isPresent()) {
             WorkerReturnDTO workerDTO = mapper.mapToDto(worker.get(), WorkerReturnDTO.class);
             return ResponseHandler.responseBuilder("Worker", HttpStatus.OK, workerDTO);
         }
@@ -108,7 +107,7 @@ public class UserController {
         String username = jwtService.extractUsername(token);
         Optional<Worker> worker = userService.getWorker(username);
 
-        if(worker.isPresent()) {
+        if (worker.isPresent()) {
             WorkerReturnDTO workerDTO = mapper.mapToDto(worker, WorkerReturnDTO.class);
             return ResponseHandler.responseBuilder("Worker", HttpStatus.OK, workerDTO);
         }
@@ -124,13 +123,20 @@ public class UserController {
         String username = jwtService.extractUsername(token);
         User client = userService.getClient(username);
 
-        if(client != null) {
+        if (client != null) {
             UserReturnDTO userDTO = mapper.mapToDto(client, UserReturnDTO.class);
             return ResponseHandler.responseBuilder("Client", HttpStatus.OK, userDTO);
         }
         return ResponseHandler.responseBuilder("Client", HttpStatus.NOT_FOUND, "Client not found");
     }
 
-
-
+    @GetMapping("/clienttoworker/{clientId}")
+    ResponseEntity<Object> getClientToWorker(@PathVariable Long clientId) {
+        Optional<User> clients = userService.getClientById(clientId);
+        if (clients.isPresent()) {
+            ClientReturnDTO clientDTOs = mapper.mapToEntity(clients.get(), ClientReturnDTO.class);
+            return ResponseHandler.responseBuilder("Client", HttpStatus.OK, clientDTOs);
+        }
+        return ResponseHandler.responseBuilder("Client", HttpStatus.NOT_FOUND, "No workers found");
+    }
 }

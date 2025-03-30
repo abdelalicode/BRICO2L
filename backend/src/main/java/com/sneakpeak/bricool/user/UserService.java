@@ -55,6 +55,10 @@ public class UserService {
                 .orElse(null);
     }
 
+    public Optional<User> getClientById(Long id) {
+        return userRepository.findById(id);
+    }
+
     @Transactional
     public User updateUserRole(@Valid UserDTO userDTO, String email) {
         User existingUser = userRepository.findByEmail(email)

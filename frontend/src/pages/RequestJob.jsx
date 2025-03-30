@@ -17,7 +17,7 @@ const CustomPopup = ({ message, color }) => (
       <div className="text-xl text-white font-semibold mb-4">
         {color === "success" ? "Success" : "Error"}
       </div>
-      <div className="text-lg text-white">{message}</div>
+      <div className="text-sm text-white">{message}</div>
     </div>
   </div>
 );

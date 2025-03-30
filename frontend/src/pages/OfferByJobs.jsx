@@ -13,15 +13,24 @@ export default function OfferByJobs() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await Api.OffersByJob(id);
-      setOffers(response.data);
+      setOffers(response.data.data);
       setLoading(false);
     };
     fetchData();
   }, [id]);
 
+   useEffect(() => {
+      const isAuth = localStorage.getItem("AUTHENTICATED") ?? false;
+  
+      if(isAuth === "false") {
+        navigate('/login');
+      }
+  
+    }, []);
+
   const fetchOffers = async () => {
     const response = await Api.OffersByJob(id);
-    setOffers(response.data);
+    setOffers(response.data.data);
   };
 
   if (loading) {
@@ -32,20 +41,22 @@ export default function OfferByJobs() {
     <>
       <h1 className="text-center my-12 m-4 text-4xl">AVAILABLE OFFERS</h1>
       <div className="flex justify-center mt-12">
-        <div className="flex gap-6 flex-wrap">
+        <div className="flex justify-center p-2 gap-4 flex-wrap">
           {offers.length > 0 ? (
             offers.map((offer, key) => (
               <div className="max-w-md mb-8 overflow-hidden bg-white rounded-lg dark:bg-gray-800">
                 <img
                   className="object-cover w-full h-64 rounded-md"
-                  src={offer.media_url}
+                  src="https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/8C53/production/_120232953_gettyimages-1020785030.jpg.webp"
                   alt="Article"
                 />
 
                 <div className="p-6">
                   <div>
                     <div className="flex justify-between items-center">
-                    {offer.client_id != null ? (
+
+                    {new Date(offer.endDate) < new Date() ? ( <span class="bg-yellow-100 mb-3 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Expired</span>
+                    ) : offer.client?.id != null ? (
                         <span className="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">
                           This Offer Is Enrolled
                         </span>
@@ -54,9 +65,10 @@ export default function OfferByJobs() {
                           offerId={offer.id}
                           fetchOffers={fetchOffers}
                         />
-                      )}
+                      )} 
+                    
                       <span className="text-xs font-medium text-pink-800 uppercase dark:text-blue-400">
-                        Hourly Rate: {offer.hourly_rate}
+                        Hourly Rate: {offer.hourlyRate} MAD
                       </span>
                     </div>
 
@@ -84,14 +96,13 @@ export default function OfferByJobs() {
                             className="mx-2 font-semibold text-gray-700 dark:text-gray-200"
                             tabIndex="0"
                           >
-                            {offer.worker.firstname} {offer.worker.lastname}
+                            {offer.worker.firstName} {offer.worker.lastName}
                           </p>
                         </Link>
                       </div>  
                       <span className="mx-1 text-xs text-gray-600 dark:text-gray-300">
-                        {new Date(offer.end_date) < new Date() ? <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Expired</span>
- : <span> AVAILABLE FROM {offer.start_date} <br /> TO{" "}
-                        {offer.end_date} </span>}
+                        <span> AVAILABLE FROM {offer.startDate} <br /> TO{" "}
+                        {offer.endDate} </span>
                         
                       </span>
                     </div>

@@ -13,6 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class WorkerInfoDTO {
 
+    private Long id;
+
+    private String firstName;
+
+    private String lastName;
 
     @Email
     private String email;

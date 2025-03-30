@@ -3,6 +3,7 @@ package com.sneakpeak.bricool.requests;
 import com.sneakpeak.bricool.user.ClientReturnDTO;
 import com.sneakpeak.bricool.worker.WorkerDashBoardReturnDTO;
 import com.sneakpeak.bricool.worker.WorkerInfoDTO;
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-public class RequestReturnDTO {
+public class RequestClientDTO {
 
     private Long id;
 
@@ -22,8 +23,9 @@ public class RequestReturnDTO {
 
     private LocalDateTime updated_at;
 
-    private ClientReturnDTO client;
+    private boolean isAccepted;
 
+    private boolean status;
 
     private WorkerInfoDTO worker;
 }

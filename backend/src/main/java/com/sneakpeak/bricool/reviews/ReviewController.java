@@ -5,6 +5,7 @@ import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.user.UserService;
 import com.sneakpeak.bricool.worker.Worker;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,20 +27,21 @@ public class ReviewController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping
-    public ResponseEntity<Object> addReview(@RequestBody Review review, @RequestParam("workerId") Long id, @RequestHeader("Authorization") String header) {
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Object> addReview(@RequestBody ReviewDTO review, @RequestParam("workerId") Long id, @RequestHeader("Authorization") String heder) {
 
-        String token = header.replace("Bearer ", "");
+        String token = heder.replace("Bearer ", "");
 
         String username = jwtService.extractUsername(token);
+
+        Review rev = modelMapper.map(review, Review.class);
         User client = userService.getClient(username);
         Worker worker = userService.getWorker(id)
                 .orElseThrow(() -> new RuntimeException("Worker not found"));
-        review.setClient(client);
-        review.setWorker(worker);
-        System.out.println(review);
+        rev.setClient(client);
+        rev.setWorker(worker);
 
-        Review createdReview = reviewService.addReview(review);
+        Review createdReview = reviewService.addReview(rev);
 
         if(createdReview == null) {
             return ResponseEntity.status(400).body("Review not created");

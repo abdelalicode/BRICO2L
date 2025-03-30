@@ -10,17 +10,30 @@ import { useUserContext } from "../../context/UserContext";
 import WorkerProfileCard from "../../components/Worker/WorkerProfileCard";
 import Api from "../../services/Api";
 import { HOME } from "../../router";
+import { jwtDecode } from "jwt-decode";
 
 export default function WorkerDashboardLayout() {
   const { user, setUser,  authenticated} = useUserContext();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   const { logout: contextLogout } = useUserContext();
 
    useEffect(() => {
     const fetchWorkerData = async () => {
       try {
+        // Check if the user is already set in the context
+        const token = localStorage.getItem("token");
+        if(!token) {
+          navigate('/login');
+        }
+
+        const decoded = jwtDecode(token);
+        if (!decoded.role.includes('ROLE_WORKER')) {
+          navigate('/');
+          return;
+       }
         if (user === null) {
           const response = await Api.getAuthWorker();
           const userObject = response?.data.data;
@@ -28,6 +41,9 @@ export default function WorkerDashboardLayout() {
         }
       } catch (error) {
         console.error('Error fetching worker data:', error);
+      }
+      finally {
+      setIsLoading(false);
       }
     };
 
@@ -46,7 +62,9 @@ export default function WorkerDashboardLayout() {
   };
 
     
-  
+  if (isLoading) {
+    return <div className="mx-auto mt-24 spinner"></div>;
+  }
 
   return (
     <div className="bg-slate-800 h-full min-h-screen w-screen">

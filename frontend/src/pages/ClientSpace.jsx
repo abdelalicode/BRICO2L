@@ -9,6 +9,7 @@ import {
 import CancelRequestModal from "../components/Home/CancelRequestModal";
 import { useNavigate } from "react-router-dom";
 import { HOME, WORKERHOME } from "../router";
+import { jwtDecode } from "jwt-decode";
 
 export default function ClientSpace() {
   const [client, setClient] = useState({});
@@ -26,6 +27,18 @@ export default function ClientSpace() {
 
   useEffect(() => {
     const fetchClient = async () => {
+      const token = localStorage.getItem("token");
+      if(!token) {
+        navigate("/login");
+        return;
+      }
+
+      const decoded = jwtDecode(token);
+
+      if (!decoded.role.includes('ROLE_CLIENT')) {
+        navigate('/worker');
+        return;
+      }
       const response = await Api.getClient();
       console.log(response.data.data);
       setClient(response.data.data);
@@ -42,7 +55,7 @@ export default function ClientSpace() {
 
   const fetchUpdatedClient = async () => {
     const response = await Api.getClient();
-   
+
     setClient(response.data.data);
   };
 
@@ -257,14 +270,22 @@ export default function ClientSpace() {
                       </div>
                       <p className="mt-2">{request.description}</p>
                       <div className="flex items-center mt-4">
+                        {request.worker ? (
+                          <span className="bg-green-100 h-full text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                            Taken By {request.worker.firstName}{" "}
+                            {request.worker.lastName} At {new Date(request.updated_at).toLocaleString()}
+                          </span>
+                        ) : (
+                          <span className="bg-red-100 h-full text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                            Not Taken Yet
+                          </span>
+                        )}
                         {request.status ? (
                           <span className="bg-indigo-100 h-full text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">
                             Active
                           </span>
                         ) : (
-                          <span className="bg-pink-100 h-full  text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">
-                            Cancelled
-                          </span>
+                          null
                         )}
 
                         {request.status === 1 && (
@@ -297,7 +318,7 @@ export default function ClientSpace() {
                         <p>
                           <span className="text-gray-700 mr-2">
                             <span className="bg-slate-100 text-slate-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">
-                              {new Date(review.created_at).toLocaleString()}
+                              {new Date(review.date).toLocaleString()}
                             </span>
                           </span>
                         </p>

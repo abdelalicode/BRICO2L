@@ -1,9 +1,7 @@
 import { axiosClient } from "../api/axios";
 
 const Api = {
-  // getCsrfToken: async () => {
-  //   return await axiosClient.get("/sanctum/csrf-cookie");
-  // },
+
 
   login: async (email, password) => {
     return await axiosClient.post("api/v1/auth/authenticate", { email, password });
@@ -23,20 +21,33 @@ const Api = {
     return await axiosClient.post("api/v1/auth/logout");
   },
 
+  // filterOffers: async (selectedCity, selectedJob, selectedDate) => {
+  //   return await axiosClient.post("api/offersby", {
+  //     city_id: selectedCity,
+  //     job_id: selectedJob,
+  //     selected_date: selectedDate,
+  //   });
+  // },
+
   filterOffers: async (selectedCity, selectedJob, selectedDate) => {
-    return await axiosClient.post("api/offersby", {
-      city_id: selectedCity,
-      job_id: selectedJob,
-      selected_date: selectedDate,
-    });
-  },
+    let params = new URLSearchParams();
+    
+    if (selectedCity) params.append('cityId', selectedCity);
+    if (selectedJob) params.append('jobId', selectedJob);
+    if (selectedDate) {
+        const formattedDate = new Date(selectedDate).toISOString().split('T')[0];
+        params.append('offerDate', formattedDate);
+    }
+
+    return await axiosClient.get(`/api/v1/offers?${params.toString()}`);
+},
 
   OffersByCity: async (id) => {
-    return await axiosClient.get(`/api/showbycity/${id}`);
+    return await axiosClient.get(`/api/v1/offers/showbycity/${id}`);
   },
 
   OffersByJob: async (id) => {
-    return await axiosClient.get(`/api/showbyjob/${id}`);
+    return await axiosClient.get(`/api/v1/offers/showbyjob/${id}`);
   },
 
   getWorker: async (id) => {
@@ -44,7 +55,7 @@ const Api = {
   },
 
   getClientToWorker: async (id) => {
-    return await axiosClient.get(`/api/clienttoworker/${id}`);
+    return await axiosClient.get(`/api/v1/users/clienttoworker/${id}`);
   },
 
   getWorkers: async () => {
@@ -57,12 +68,12 @@ const Api = {
   },
 
   getWorkerOffers: async () => {
-    return await axiosClient.get("/api/workeroffers");
+    return await axiosClient.get("/api/v1/offers/workeroffers");
   },
 
 
   TakeRequest: async (id) => {
-    return await axiosClient.put("/api/takerequest", {id});
+    return await axiosClient.put(`/api/v1/requests/takerequest/`+ id);
   },
 
   getClient: async () => {
@@ -89,13 +100,13 @@ const Api = {
     });
   },
 
-  UpdateProfileAvatar : async (formData) => {
-    return await axiosClient.post("api/updateprofileavatar", formData , {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-  },
+  // UpdateProfileAvatar : async (formData) => {
+  //   return await axiosClient.post("api/updateprofileavatar", formData , {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   })
+  // },
 
   AddJob: async (formData) => {
     return await axiosClient.post("api/professions", formData )
@@ -106,7 +117,7 @@ const Api = {
   },
 
   SendReview: async (stars, content, id) => {
-    return await axiosClient.post(`api/v1/reviews?workerId=${id}`, {stars, content})
+    return await axiosClient.post(`api/v1/reviews?workerId=${id}`, {stars, content});
   },
 
   deleteReview: async (id) => {
@@ -131,11 +142,11 @@ const Api = {
   },
 
   cancelOffer: async (id) => {
-    return await axiosClient.put("api/offer/" + id)
+    return await axiosClient.put("api/v1/offers/" + id)
   },
 
   enrollOffer: async (id) => {
-    return await axiosClient.put("api/enrolloffer/" + id)
+    return await axiosClient.put("api/v1/offers/enrolloffer/" + id)
   },
   
   getJobs: async () => {

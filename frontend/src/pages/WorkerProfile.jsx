@@ -153,7 +153,7 @@ export default function WorkerProfile() {
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full lg:w-9/12 px-4">
                     <ProfileTabs
-                      worker_offers={worker.worker_offers}
+                      worker_offers={worker.offers}
                       reviews_as_worker={worker.reviews}
                       handleReviewDeleted={handleReviewDeleted}
                     />

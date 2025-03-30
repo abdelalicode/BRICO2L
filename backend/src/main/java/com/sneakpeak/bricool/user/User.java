@@ -1,6 +1,9 @@
 package com.sneakpeak.bricool.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sneakpeak.bricool.offers.Offer;
+import com.sneakpeak.bricool.requests.Request;
+import com.sneakpeak.bricool.reviews.Review;
 import com.sneakpeak.bricool.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -61,4 +64,12 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<Review> reviewsAsClient;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<Request> requests;
 }

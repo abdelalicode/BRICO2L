@@ -1,10 +1,13 @@
 package com.sneakpeak.bricool.requests;
 
 import com.sneakpeak.bricool.config.JwtService;
+import com.sneakpeak.bricool.exception.NotFoundException;
 import com.sneakpeak.bricool.response.ResponseHandler;
 import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.user.UserService;
 import com.sneakpeak.bricool.utils.EntityDtoMapper;
+import com.sneakpeak.bricool.worker.Worker;
+import com.sneakpeak.bricool.worker.WorkerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +25,15 @@ public class RequestController {
     private final UserService userService;
     private final RequestService requestService;
     private final EntityDtoMapper entityDtoMapper;
+    private final WorkerService workerService;
 
-    public RequestController(ModelMapper modelMapper, JwtService jwtService, UserService userService, RequestService requestService, EntityDtoMapper entityDtoMapper) {
+    public RequestController(ModelMapper modelMapper, JwtService jwtService, UserService userService, RequestService requestService, EntityDtoMapper entityDtoMapper, WorkerService workerService) {
         this.modelMapper = modelMapper;
         this.jwtService = jwtService;
         this.userService = userService;
         this.requestService = requestService;
         this.entityDtoMapper = entityDtoMapper;
+        this.workerService = workerService;
     }
 
     @PostMapping
@@ -58,22 +63,24 @@ public class RequestController {
     }
 
 
-    ResponseEntity<Object> getRequestById(Long id) {
-        return null;
-    }
 
     ResponseEntity<Object> getRequestByCity(Long cityID) {
         return null;
     }
 
-    ResponseEntity<Object> updateRequest(Long id, RequestDTO request) {
-        return null;
+    @PutMapping("/takerequest/{id}")
+    ResponseEntity<Object> takeRequest(@PathVariable Long id, @RequestHeader("Authorization") String header) {
+        String token = header.replace("Bearer ", "");
+        String username = jwtService.extractUsername(token);
+        Worker user = workerService.getWorker(username).orElseThrow(() -> new NotFoundException("Worker not found"));
+
+        if(requestService.takeRequest(id, user)) {
+            return ResponseHandler.responseBuilder("Request taken successfully", HttpStatus.OK, null);
+        }
+
+        return ResponseHandler.errorBuilder("Request not taken", HttpStatus.BAD_REQUEST);
     }
 
-
-    ResponseEntity<Object> deleteRequest(Long id) {
-        return null;
-    }
 
 
 }

@@ -1,6 +1,8 @@
 package com.sneakpeak.bricool.worker;
 
 import com.sneakpeak.bricool.city.City;
+import com.sneakpeak.bricool.offers.OfferDTO;
+import com.sneakpeak.bricool.offers.OfferReturnDTO;
 import com.sneakpeak.bricool.profession.Profession;
 import com.sneakpeak.bricool.profession.ProfessionReturnDTO;
 import com.sneakpeak.bricool.reviews.ReviewReturnDTO;
@@ -23,5 +25,6 @@ public class WorkerReturnDTO {
     private ProfessionReturnDTO profession;
     private City city;
     private List<ReviewReturnDTO> reviews;
+    private List<OfferReturnDTO> offers;
     private boolean available;
 }

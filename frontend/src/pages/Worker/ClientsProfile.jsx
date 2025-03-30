@@ -13,7 +13,7 @@ export default function ClientsProfile() {
   useEffect(() => {
     const fetchClient = async () => {
       const response = await Api.getClientToWorker(id);
-      setClient(response.data);
+      setClient(response.data.data);
       setLoading(false);
     };
 
@@ -48,7 +48,7 @@ export default function ClientsProfile() {
           <div className="space-y-2">
             {client != null ?
             <div className="flex justify-center items-center flex-col space-y-3 text-lg font-medium leading-6">
-              <h3 className="text-white">{client.firstname} {client.lastname}</h3>
+              <h3 className="text-white">{client.firstName} {client.lastName}</h3>
               <p className="text-indigo-300"><span className="text-white"> Email : </span>{client.email} <br /> <span className="text-white"> Phone : </span>{client.phone != null ? client.phone : "No Phone for The user"}</p>
               <div className="flex justify-center mt-5 space-x-5">
               <button type="button" className="text-gray-900 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Contact</button>

@@ -45,7 +45,8 @@ export default function () {
 
   const offersby = async () => {
     const data = await Api.filterOffers(selectedCity, selectedJob, selectedDate)
-      setFilteredOffers(data.data);
+    console.log(data.data.data);
+      setFilteredOffers(data.data.data);
       navigate("/filteredoffers");
   };
 

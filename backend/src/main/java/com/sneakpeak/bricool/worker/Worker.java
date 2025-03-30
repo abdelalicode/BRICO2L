@@ -2,6 +2,7 @@ package com.sneakpeak.bricool.worker;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sneakpeak.bricool.city.City;
+import com.sneakpeak.bricool.offers.Offer;
 import com.sneakpeak.bricool.profession.Profession;
 import com.sneakpeak.bricool.reviews.Review;
 import com.sneakpeak.bricool.user.User;
@@ -34,8 +35,11 @@ public class Worker extends User {
         private City city;
 
         @OneToMany(mappedBy = "worker")
-        @JsonManagedReference
         private List<Review> reviews;
+
+
+        @OneToMany(mappedBy = "worker")
+        private List<Offer> offers;
 
 
         @Override

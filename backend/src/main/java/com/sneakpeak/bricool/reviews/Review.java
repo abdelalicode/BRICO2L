@@ -32,7 +32,6 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "worker_id")
-    @JsonIgnore
     private Worker worker;
 
 

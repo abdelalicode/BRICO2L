@@ -14,7 +14,8 @@ export default function Offers({user}) {
   useEffect(() => {
     const fetchWorkerOffers = async () => {
       const response = await Api.getWorkerOffers();
-      setWorkerOffers(response.data);
+      setWorkerOffers(response.data.data);
+      console.log(workerOffers);
     };
     fetchWorkerOffers();
   }, []);
@@ -22,7 +23,7 @@ export default function Offers({user}) {
 
   const fetchUpdatedOffers = async () => {
     const response = await Api.getWorkerOffers();
-    setWorkerOffers(response.data);
+    setWorkerOffers(response.data.data);
   };
 
  
@@ -41,8 +42,8 @@ export default function Offers({user}) {
             Job To Your Profile Section
           </div>
         )}
-        <table className="w-full text-sm text-left rtl:text-right text-white dark:text-white">
-          <thead className="text-xs text-white uppercase dark:text-white">
+        <table className="w-full text-sm  text-left rtl:text-right text-white dark:text-white">
+          <thead className="text-xs  text-white uppercase dark:text-white">
             <tr className="border-b border-8 border-slate-800 dark:border-gray-700">
               <th
                 scope="col"
@@ -91,25 +92,25 @@ export default function Offers({user}) {
                   </td>
                   <td className="px-2 py-3 bg-slate-600 dark:bg-slate-800">
                     <Badge className="justify-center " color="indigo">
-                      {offer.start_date}
+                      {offer.startDate}
                     </Badge>
                   </td>
                   <td className="px-1 py-3 bg-slate-700">
                     <Badge className="justify-center w-full" color="warning">
-                      {offer.end_date}
+                      {offer.endDate}
                     </Badge>
                   </td>
-                  <td className="px-1 py-3 bg-slate-600 dark:bg-slate-800">
-                    {offer.hourly_rate}
+                  <td className="px-1 py-3 pl-12 bg-slate-600 dark:bg-slate-800">
+                    {offer.hourlyRate}
                   </td>
                   <td className="px-3 py-3 bg-slate-700">
-                    {offer.cancelled ? (
+                    {offer.canceled ? (
                       "Cancelled"
-                    ) : offer.client_id != null ? (
+                    ) : offer.client?.id != null ? (
                       <span>
                         Taken By{" "}
-                        <Link to={`/clienttoworker/${offer.client.id}`}>
-                          {offer.client.firstname} {offer.client.lastname}
+                        <Link to={`/clienttoworker/${offer.client?.id}`}>
+                          {offer.client?.firstName} {offer.client?.lastName}
                         </Link>
                       </span>
                     ) : (
@@ -118,7 +119,7 @@ export default function Offers({user}) {
                   </td>
 
                   <td className="px-3 py-4 bg-slate-600">
-                    {!offer.cancelled && (
+                    {!offer.canceled && (
                       <CancelOfferModal
                         fetchUpdatedOffers={fetchUpdatedOffers}
                         offerid={offer.id}

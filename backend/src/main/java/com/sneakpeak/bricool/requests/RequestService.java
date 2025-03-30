@@ -2,6 +2,9 @@ package com.sneakpeak.bricool.requests;
 
 import com.sneakpeak.bricool.city.City;
 import com.sneakpeak.bricool.city.CityRepository;
+import com.sneakpeak.bricool.exception.NotFoundException;
+import com.sneakpeak.bricool.user.User;
+import com.sneakpeak.bricool.worker.Worker;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,5 +35,15 @@ public class RequestService {
 
     public List<Request> getAllRequests() {
         return requestRepository.findAll();
+    }
+
+    public boolean takeRequest(Long id, Worker user) {
+        Request request = requestRepository.findById(id).orElseThrow(() -> new NotFoundException("Request not found"));
+
+        request.setWorker(user);
+        request.setAccepted(true);
+
+        requestRepository.save(request);
+        return true;
     }
 }

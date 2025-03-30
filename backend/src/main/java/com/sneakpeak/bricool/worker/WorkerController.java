@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/workers")
@@ -52,7 +53,9 @@ public class WorkerController {
     @GetMapping
     public ResponseEntity<Object> getAllWorkers(HttpServletRequest request) {
         List<User> allWorkers = userService.findAllWorkers();
-        List<WorkerReturnDTO> userDTOs = mapper.mapToEntityList(allWorkers, WorkerReturnDTO.class);
+        List<WorkerReturnDTO> userDTOs = allWorkers.stream()
+                .map(worker -> mapper.mapToWorkerReturnDTO((Worker) worker))
+                .collect(Collectors.toList());
         return ResponseHandler.responseBuilder("All Workers List", HttpStatus.OK, userDTOs);
 
     }
@@ -61,7 +64,7 @@ public class WorkerController {
     public ResponseEntity<Object> getWorker(@PathVariable Long id) {
         Optional<Worker> worker = userService.getWorker(id);
         if(worker.isPresent()) {
-            WorkerReturnDTO workerDTO = mapper.mapToDto(worker.get(), WorkerReturnDTO.class);
+            WorkerReturnDTO workerDTO = mapper.mapToWorkerReturnDTO(worker.get());
             return ResponseHandler.responseBuilder("Worker", HttpStatus.OK, workerDTO);
         }
         return ResponseHandler.responseBuilder("Worker", HttpStatus.NOT_FOUND, "Worker not found");
@@ -76,7 +79,7 @@ public class WorkerController {
         Optional<Worker> worker = userService.getWorker(username);
 
         if(worker.isPresent()) {
-            WorkerReturnDTO workerDTO = mapper.mapToDto(worker, WorkerReturnDTO.class);
+            WorkerReturnDTO workerDTO = mapper.mapToWorkerReturnDTO(worker.get());
             return ResponseHandler.responseBuilder("Worker", HttpStatus.OK, workerDTO);
         }
         return ResponseHandler.responseBuilder("Worker", HttpStatus.NOT_FOUND, "Worker not found");

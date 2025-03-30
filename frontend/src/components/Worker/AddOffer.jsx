@@ -1,6 +1,7 @@
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { useState } from "react";
 import Api from "../../services/Api";
+import { z } from "zod";
 
 export function AddOffer({fetchUpdatedOffers}) {
   const [openModal, setOpenModal] = useState(false);
@@ -9,6 +10,7 @@ export function AddOffer({fetchUpdatedOffers}) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [hourlyRate, setHourlyRate] = useState("");
+  const [errors, setErrors] = useState({});
 
   function onCloseModal() {
     setOpenModal(false);
@@ -19,22 +21,53 @@ export function AddOffer({fetchUpdatedOffers}) {
     setHourlyRate("");
   }
 
+  const offerSchema = z.object({
+    title: z.string().min(1, "Le titre est requis"),
+    description: z.string().min(1, "La description est requise"),
+    start_date: z.string().min(1, "La date de début est requise"),
+    end_date: z.string().min(1, "La date de fin est requise"),
+    hourly_rate: z.string().min(1, "Le taux horaire est requis")
+  }).refine((data) => {
+    return new Date(data.end_date) >= new Date(data.start_date);
+  }, {
+    message: "La date de fin ne peut pas être antérieure à la date de début",
+    path: ["end_date"]
+  });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("start_date", startDate);
-    formData.append("end_date", endDate);
-    formData.append("hourly_rate", hourlyRate);
-    
 
-    const response = await Api.AddOffer(formData);
-    
-    fetchUpdatedOffers();
+    const formValues = {
+      title,
+      description,
+      start_date: startDate,
+      end_date: endDate,
+      hourly_rate: hourlyRate
+    };
 
-    onCloseModal();
-  };
+    try {
+      offerSchema.parse(formValues);
+
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("start_date", startDate);
+      formData.append("end_date", endDate);
+      formData.append("hourly_rate", hourlyRate);
+
+      const response = await Api.AddOffer(formData);
+      fetchUpdatedOffers();
+      onCloseModal();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errorMap = {};
+        error.errors.forEach(err => {
+          errorMap[err.path[0]] = err.message;
+        });
+        setErrors(errorMap);
+      }
+    }
+  }
 
   return (
     <>
@@ -58,6 +91,8 @@ export function AddOffer({fetchUpdatedOffers}) {
                   onChange={(event) => setTitle(event.target.value)}
                   required
                 />
+                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+
               </div>
               <div className="my-2">
                 <Label htmlFor="description" value="Your Offer Description" />
@@ -68,6 +103,7 @@ export function AddOffer({fetchUpdatedOffers}) {
                   onChange={(event) => setDescription(event.target.value)}
                   required
                 />
+                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
               </div>
               <div className="flex space-x-4">
                 <div>
@@ -81,8 +117,9 @@ export function AddOffer({fetchUpdatedOffers}) {
                     placeholder="Select date start"
                     min={new Date().toISOString().split('T')[0]} 
                   />
+                  {errors.start_date && <p className="text-red-500 text-sm mt-1">{errors.start_date}</p>}
                 </div>
-                <div className="my-2">
+                <div>
                   <Label htmlFor="end_date" value="End Date" />
                   <input
                     name="end_date"
@@ -93,9 +130,10 @@ export function AddOffer({fetchUpdatedOffers}) {
                     placeholder="Select date end"
                     min={new Date().toISOString().split('T')[0]} 
                   />
+                  {errors.end_date && <p className="text-red-500 text-sm mt-1">{errors.end_date}</p>}
                 </div>
               </div>
-              <div>
+              <div className="mt-2">
                 <Label htmlFor="hourly_rate" value="Your Offer Hourly Rate" />
 
                 <input
@@ -110,6 +148,7 @@ export function AddOffer({fetchUpdatedOffers}) {
                   placeholder="50.00"
                   required
                 />
+                {errors.hourly_rate && <p className="text-red-500 text-sm mt-1">{errors.hourly_rate}</p>}
               </div>
             
 

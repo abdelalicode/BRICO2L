@@ -1,4 +1,5 @@
 package com.sneakpeak.bricool.requests;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sneakpeak.bricool.user.User;
 import com.sneakpeak.bricool.worker.Worker;
 import jakarta.persistence.*;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,8 +30,14 @@ public class Request {
     @CreationTimestamp
     private LocalDateTime created_at;
 
+    @UpdateTimestamp
+    private LocalDateTime updated_at;
+
     @Column(columnDefinition = "boolean default false")
     private boolean isAccepted;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
