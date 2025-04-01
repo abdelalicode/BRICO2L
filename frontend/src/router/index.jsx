@@ -23,6 +23,8 @@ import WorkerDashboardLayout from "../layouts/Worker/WorkerDashboardLayout";
 import ClientsProfile from "../pages/Worker/ClientsProfile";
 import HomeGuestLayout from "../layouts/HomeGuestLayout";
 import AdminJobs from "../pages/Admin/AdminJobs";
+import RoleGuard from "../guards/RoleGuard";
+
 
 export const HOME = "/";
 export const ADMINHOME = "/admin";
@@ -122,7 +124,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <WorkerDashboardLayout />,
+    element:(
+        <RoleGuard requiredRoles={['ROLE_WORKER']} redirectTo="/">
+        <WorkerDashboardLayout />
+        </RoleGuard>
+    ),
     children: [
       {
         path: WORKERHOME,
