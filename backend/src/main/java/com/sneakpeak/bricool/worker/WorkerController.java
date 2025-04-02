@@ -45,7 +45,8 @@ public class WorkerController {
 
             Worker updatedUser = workerService.updateWorker(workerDTO, str);
 
-            UserReturnDTO createdUserDTO = mapper.mapToDto(updatedUser, UserReturnDTO.class);
+            WorkerReturnDTO createdUserDTO = mapper.mapToWorkerReturnDTO(updatedUser);
+
             return ResponseHandler.responseBuilder("Updated successfully", HttpStatus.CREATED, createdUserDTO);
     }
 

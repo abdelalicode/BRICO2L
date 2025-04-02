@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,8 +58,10 @@ public class OfferController {
 
         assert worker != null;
 
+
         List <OfferCityReturnDTO> offers = worker.getOffers().stream()
                 .map(offer -> modelMapper.map(offer, OfferCityReturnDTO.class))
+                .sorted(Comparator.comparing(OfferCityReturnDTO::getStartDate).reversed())
                 .toList();
 
         return ResponseHandler.responseBuilder("success", HttpStatus.OK, offers);

@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 function RoleGuard({ children, requiredRoles = [], redirectTo = '/login' }) {
-    // Vérification du token
+
     const token = localStorage.getItem('token');
     if (!token) {
         return <Navigate to={redirectTo} />;
